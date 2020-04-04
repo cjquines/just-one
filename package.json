@@ -1,0 +1,16 @@
+{
+  "name": "just-one",
+  "version": "1.0.0",
+  "description": "just one, the game!",
+  "main": "server/server.js",
+  "author": "cjquines",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "scripts": {
+    "start": "nodemon",
+    "hotloader": "cd client && npm start"
+  }
+}
