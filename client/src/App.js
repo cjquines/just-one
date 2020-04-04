@@ -5,19 +5,28 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      response: false,
       endpoint: "http://localhost:4001"
     };
   }
 
   componentDidMount() {
-    const socket = socketIOClient(this.state.endpoint);
+    const { endpoint } = this.state;
+    const socket = socketIOClient(endpoint);
+
+    const myName = prompt("Enter your name") || undefined;
+    this.setState({ myName });
+
+    socket.emit("name", myName);
+
+    socket.on("playerlist", (players) => this.setState({ players }));
   }
 
   render() {
+    const { players } = this.state;
+
     return (
-      <div style={{ textAlign: "center" }}>
-        test!
+      <div>
+        {players}
       </div>
     );
   }

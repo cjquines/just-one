@@ -12,9 +12,23 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(reactPath, "index.html"));
 });
 
-io.on("connection", (socket) => {
-  console.log("!!");
+// IO
+
+let roomState = {
+  activePlayer: undefined,
+  word: undefined,
+  players: [],
+  clues: {},
+};
+
+io.on("connection", (socket) => {  
+  socket.on("name", (name) => {
+    roomState.players.push(name);
+    io.emit("playerlist", roomState.players);
+  });
 });
+
+// serve
 
 http.listen(process.env.PORT || 4001, () => {
   console.log("listening!");
