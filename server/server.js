@@ -22,17 +22,17 @@ io.on("connection", (socket) => {
   socket.on("name", (name_) => {
     name = name_;
     room.newPlayer(name, socket.id);
-    room.sendState(name);
+    room.sendState(socket);
   });
 
-  socket.on("disconnect", () => { room.disconnectPlayer(name); });
-  socket.on("kick", (name_) => { room.kickPlayer(name_); });
+  socket.on("disconnect", () => room.disconnectPlayer(name));
+  socket.on("kick", name_ => room.kickPlayer(name_));
 
-  socket.on("phase", (phase) => { room.startPhase(phase); });
-  socket.on("clue", (clue) => { room.handleClue(name, clue); });
-  socket.on("toggle", (name_) => { room.toggleClue(name_); });
-  socket.on("judge", (judgement) => { room.handleJudge(judgement); });
-  socket.on("end", (action) => { room.handleEnd(action); });
+  socket.on("phase", phase => room.startPhase(phase));
+  socket.on("clue", clue => room.handleClue(name, clue));
+  socket.on("toggle", name_ => room.toggleClue(name_));
+  socket.on("judge", judgement => room.handleJudge(judgement));
+  socket.on("end", action => room.handleEnd(action));
 });
 
 // serve

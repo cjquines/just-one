@@ -4,19 +4,20 @@ import socketIOClient from "socket.io-client";
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      endpoint: "http://localhost:4001"
-    };
+    this.state = {};
   }
 
   componentDidMount() {
-    const { endpoint } = this.state;
-    const socket = socketIOClient(endpoint);
+    const socket = socketIOClient("http://localhost:4001");
+    this.setState({ socket });
 
     const myName = prompt("Enter your name") || undefined;
     this.setState({ myName });
 
     socket.emit("name", myName);
+    socket.on("players", (players, playerOrder) => this.setState({ players, playerOrder }));
+    socket.on("phase", (phase, activePlayer) => this.setState({ phase, activePlayer }));
+
     // socket.emit("phase")
     // socket.emit("clue")
     // socket.emit("toggle")
@@ -32,11 +33,14 @@ class App extends Component {
     // socket.on("clue", );
     // socket.on("guess", );
 
-    socket.on("players", (players) => this.setState({ players }));
+  }
+
+  handleKick = (e, name) => {
+    this.state.socket.emit("kick", name);
   }
 
   render() {
-    const { players } = this.state;
+    const { players, playerOrder } = this.state;
 
     return (
       <div id="wrapper">
@@ -47,7 +51,13 @@ class App extends Component {
           <button>start game</button>
         </div>
         <div id="players">
-          {players && players.map(obj => obj.name)}
+          {playerOrder && playerOrder.map(name => (
+              <div>
+                {name}
+                {players[name].status}
+                <button onClick={e => this.handleKick(e, name)}>kick</button>
+              </div>
+            ))}
         </div>
       </div>
     );
