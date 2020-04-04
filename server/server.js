@@ -1,7 +1,7 @@
+const Room = require("./Room");
 const express = require("express");
-const path = require("path");
-
 const app = express();
+const path = require("path");
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
@@ -14,18 +14,25 @@ app.get("*", (req, res) => {
 
 // IO
 
-let roomState = {
-  activePlayer: undefined,
-  word: undefined,
-  players: [],
-  clues: {},
-};
+let room = new Room(io);
 
-io.on("connection", (socket) => {  
-  socket.on("name", (name) => {
-    roomState.players.push(name);
-    io.emit("playerlist", roomState.players);
+io.on("connection", (socket) => {
+  let name = undefined;
+
+  socket.on("name", (name_) => {
+    name = name_;
+    room.newPlayer(name, socket.id);
+    room.sendState(name);
   });
+
+  socket.on("disconnect", () => { room.disconnectPlayer(name); });
+  socket.on("kick", (name_) => { room.kickPlayer(name_); });
+
+  socket.on("phase", (phase) => { room.startPhase(phase); });
+  socket.on("clue", (clue) => { room.handleClue(name, clue); });
+  socket.on("toggle", (name_) => { room.toggleClue(name_); });
+  socket.on("judge", (judgement) => { room.handleJudge(judgement); });
+  socket.on("end", (action) => { room.handleEnd(action); });
 });
 
 // serve
