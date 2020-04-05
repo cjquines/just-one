@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 
+import Players from "./Players.js";
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
+      phase: "wait",
       spectating: false,
     };
   }
@@ -86,18 +89,17 @@ class App extends Component {
           <button onClick={e => this.handlePhase("end")}>start end</button>
           <button onClick={this.submitReveal}>reveal all</button>
         </div>
-        <div id="players">
-          {playerOrder && playerOrder.map(name => (
-              <div>
-                {name}
-                {players[name].status}
-                {clues && clues[name] ? clues[name].clue : "typing..."}
-                {clues && clues[name] ? (clues[name].visible ? "visible" : "hidden") : "visible"}
-                <button onClick={e => this.handleKick(name)}>kick</button>
-                <button onClick={e => this.toggleClue(name)}>toggle</button>
-              </div>
-            ))}
-        </div>
+        <Players
+          activePlayer={this.state.activePlayer}
+          amActive={this.state.myName === this.state.activePlayer}
+          clues={this.state.clues}
+          handleKick={this.handleKick}
+          toggleClue={this.toggleClue}
+          phase={this.state.phase}
+          playerOrder={this.state.playerOrder}
+          players={this.state.players}
+          socket={this.state.socket}
+        />
       </div>
     );
   }

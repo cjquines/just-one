@@ -81,7 +81,7 @@ class Room {
   blindClues() {
     const newClues = Object.fromEntries(
       Object.entries(this.clues).map(([name, {clue, visible}]) => 
-        [name, {clue: clue ? "has clue" : "no clue yet", visible: visible}]
+        [name, {clue: Boolean(clue), visible: visible}]
       )
     );
     newClues[this.activePlayer].clue = "guessing";
@@ -91,7 +91,7 @@ class Room {
   hiddenClues() {
     return Object.fromEntries(
       Object.entries(this.clues).map(([name, {clue, visible}]) => 
-        [name, {clue: visible ? clue : "hidden!", visible: visible}]
+        [name, {clue: visible && clue, visible: visible}]
       )
     );
   }
