@@ -80,8 +80,10 @@ class Players extends Component {
     }
 
     let spect = null;
-    if (spectators === 1) spect = "1 spectator";
-    else if (spectators > 1) spect = spectators + " spectators";
+    if (spectators) spect = spectators.length;
+    if (spect === 0) spect = null;
+    else if (spect === 1) spect += " spectator";
+    else if (spect > 1) spect += " spectators";
 
     return (
       <div className="Players-Wrapper">
