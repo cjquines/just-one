@@ -20,6 +20,7 @@ class App extends Component {
     socket.on("word", word => this.setState({ word }));
     socket.on("clues", clues => this.setState({ clues }));
     socket.on("guess", guess => this.setState({ guess }));
+    socket.on("judgment", guess => this.setState({ judgment }));
 
     // socket.emit("end")
   }
@@ -48,16 +49,16 @@ class App extends Component {
     this.state.socket.emit("toggle", name);
   }
 
-  submitJudge = (judgement) => {
-    this.state.socket.emit("judge", judgement);
+  submitJudge = (judgment) => {
+    this.state.socket.emit("judge", judgment);
   }
 
   render() {
-    const { activePlayer, clues, guess, myName, phase, players, playerOrder, word } = this.state;
+    const { activePlayer, clues, guess, judgment, myName, phase, players, playerOrder, word } = this.state;
 
     return (
       <div id="wrapper">
-        {`The phase is ${phase}.`}
+        {`The phase is ${phase}. The judgment is ${judgment ? "correct" : "incorrect"}.`}
         <div id="status">
           {
             (activePlayer === myName) ? "You are the active player." : `The word is ${word || "nothing"}. The guess was ${guess || "nothing"}.`

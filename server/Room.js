@@ -9,6 +9,7 @@ class Room {
     this.activePlayer = undefined;
     this.clues = {}; // player -> {clue, visible}
     this.guess = undefined;
+    this.judgment = undefined;
     this.phase = "wait"; // "clue", "eliminate", "guess", "judge", "end"
     this.playerOrder = [];
     this.players = {}; // of name => {id, status}
@@ -89,7 +90,7 @@ class Room {
     } else if (this.phase === "eliminate") {
       this.toActive("clues", this.blindClues());
       this.toInactive("clues", this.clues);
-    } else if (this.phase === "guess") {
+    } else if (this.phase === "guess" || this.phase === "judge") {
       this.toActive("clues", this.hiddenClues());
       this.toInactive("clues", this.clues);
     }
@@ -101,6 +102,10 @@ class Room {
 
   sendGuess() {
     this.io.emit("guess", this.guess);
+  }
+
+  sendJudgment() {
+    this.io.emit("judgment", this.judgment);
   }
 
   sendPhase() {
@@ -124,7 +129,11 @@ class Room {
     this.sendGuess();
   }
 
-  handleJudge(judgement) {}
+  handleJudge(judgment) {
+    this.judgment = judgment;
+    this.sendJudgment();
+  }
+
   handleEnd(action) {}
 
   startPhase(phase) {
