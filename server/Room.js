@@ -43,14 +43,15 @@ class Room {
   addSpectator(socket) {
     this.sendState(null, socket);
     this.spectators.push(socket.id);
+    this.sendPlayers();
   }
 
   disconnectPlayer(name, socketId) {
-    if (name in this.players) {
+    if (name in this.players && this.players[name] === socketId) {
       this.players[name].status = "disconnected";
-      this.sendPlayers();
     }
     this.spectators = this.spectators.filter(id => id !== socketId);
+    this.sendPlayers();
   }
 
   kickPlayer(name) {
