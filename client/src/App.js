@@ -91,6 +91,7 @@ class App extends Component {
           phase={this.state.phase}
           playerOrder={this.state.playerOrder}
           players={this.state.players}
+          spectators{this.state.spectators}
         />
       </div>
     );
