@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 
+import Action from "./Action.js";
 import Players from "./Players.js";
 import Status from "./Status.js";
 
@@ -33,10 +34,6 @@ class App extends Component {
     socket.on("judgment", judgment => this.setState({ judgment }));
   }
 
-  handleChange = (e) => {
-    this.setState({value: e.target.value});
-  }
-
   submitClue = (e) => {
     this.state.socket.emit("clue", this.state.value);
   }
@@ -66,33 +63,25 @@ class App extends Component {
   }
 
   render() {
-    const { activePlayer, clues, guess, judgment, myName, phase, players, playerOrder, word } = this.state;
-
     const amActive = this.state.myName === this.state.activePlayer;
-
     return (
       <div id="wrapper">
-        {`The phase is ${phase}. The judgment is ${judgment ? "correct" : "incorrect"}.`}
         <Status
           activePlayer={this.state.activePlayer}
           amActive={amActive}
           phase={this.state.phase}
           word={this.state.word}
         />
-        <div id="action">
-          <input type="text" onChange={this.handleChange}/>
-          <button onClick={this.submitClue}>submit clue</button>
-          <button onClick={this.submitGuess}>submit guess</button>
-          <button onClick={e => this.submitJudge(false)}>judge incorrect</button>
-          <button onClick={e => this.submitJudge(true)}>judge correct</button>
-
-          <button onClick={e => this.handlePhase("clue")}>start clue</button>
-          <button onClick={e => this.handlePhase("eliminate")}>start eliminate</button>
-          <button onClick={e => this.handlePhase("guess")}>start guess</button>
-          <button onClick={e => this.handlePhase("judge")}>start judge</button>
-          <button onClick={e => this.handlePhase("end")}>start end</button>
-          <button onClick={this.submitReveal}>reveal all</button>
-        </div>
+        <Action
+          amActive={amActive}
+          handlePhase={this.handlePhase}
+          judgment={this.state.judgment}
+          phase={this.state.phase}
+          submitClue={this.submitClue}
+          submitGuess={this.submitGuess}
+          submitJudge={this.submitJudgem}
+          submitReveal={this.submitReveal}
+        />
         <Players
           activePlayer={this.state.activePlayer}
           amActive={amActive}
