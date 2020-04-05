@@ -53,20 +53,20 @@ class App extends Component {
   }
 
   render() {
-    const { activePlayer, clues, guess, phase, players, playerOrder, word } = this.state;
+    const { activePlayer, clues, guess, myName, phase, players, playerOrder, word } = this.state;
 
     return (
       <div id="wrapper">
         {`The phase is ${phase}.`}
         <div id="status">
           {
-            (activePlayer) ? "You are the active player." : `The word is ${word || "nothing"}. The guess was ${guess || "nothing"}.`
+            (activePlayer === myName) ? "You are the active player." : `The word is ${word || "nothing"}. The guess was ${guess || "nothing"}.`
           }
         </div>
         <div id="action">
           <input type="text" onChange={this.handleChange}/>
           <button onClick={this.submitClue}>submit clue</button>
-          <button onClick={this.submitGuess}>submit clue</button>
+          <button onClick={this.submitGuess}>submit guess</button>
           <button onClick={e => this.submitJudge(false)}>judge incorrect</button>
           <button onClick={e => this.submitJudge(true)}>judge correct</button>
 
@@ -81,7 +81,8 @@ class App extends Component {
               <div>
                 {name}
                 {players[name].status}
-                {clues && clues[name]}
+                {clues && clues[name].clue}
+                {clues && clues[name].visible}
                 <button onClick={e => this.handleKick(name)}>kick</button>
                 <button onClick={e => this.toggleClue(name)}>toggle</button>
               </div>
