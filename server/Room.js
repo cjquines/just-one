@@ -65,15 +65,22 @@ class Room {
     });
   }
 
+  blindClues() {
+    const newClues = Object.fromEntries(
+      Object.entries(this.clues).map(([name, {clue, visible}]) => 
+        [name, {clue: clue ? "submitted!" : "typing...", visible: visible}]
+      )
+    );
+    newClues[this.activePlayer].clue = "guessing";
+    return newClues;
+  }
+
   sendClues() {
     if (this.phase === "clue") {
-      const newClues = Object.fromEntries(
-        Object.entries(this.clues).map(([name, {clue, visible}]) => 
-          [name, {clue: clue ? "submitted!" : "typing...", visible: visible}]
-        )
-      );
-      newClues[this.activePlayer].clue = "guessing";
-      this.io.emit("clues", newClues);
+      this.io.emit("clues", this.blindClues());
+    } else if (this.phase === "eliminate") {
+      this.toActive("clues", this.blindClues());
+      this.toInactive("clues", this.clues);
     }
   }
 
@@ -93,7 +100,11 @@ class Room {
     this.sendClues();
   }
 
-  toggleClue(name) {}
+  toggleClue(name) {
+    this.clues[name].visible = !this.clues[name].visible;
+    this.sendClues();
+  }
+
   handleGuess(guess) {}
   handleJudge(judgement) {}
   handleEnd(action) {}
@@ -107,13 +118,17 @@ class Room {
       } else {
         this.activePlayer = this.playerOrder[0];
       }
-      this.playerOrder.map(name => { this.clues[name] = { clue: null, visible: true }; });
+      this.playerOrder.map(name => {
+        this.clues[name] = { clue: null, visible: true };
+      });
       this.clues[this.activePlayer].clue = "guessing";
       this.word = "soap";
       this.sendClues();
       this.sendWord();
-      this.sendPhase();      
+    } else if (phase === "eliminate") {
+      this.sendClues();
     }
+    this.sendPhase();
   }
 }
 
