@@ -22,8 +22,9 @@ io.on("connection", (socket) => {
     room.newPlayer(name, socket.id);
     room.sendState(name, socket);
   });
+  socket.on("spectator", () => room.addSpectator(socket));
 
-  socket.on("disconnect", () => room.disconnectPlayer(name));
+  socket.on("disconnect", () => room.disconnectPlayer(name, socket.id));
   socket.on("kick", name_ => room.kickPlayer(name_));
 
   socket.on("phase", phase => room.startPhase(phase));

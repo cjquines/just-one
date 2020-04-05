@@ -4,7 +4,9 @@ import socketIOClient from "socket.io-client";
 class App extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      spectating: false,
+    };
   }
 
   componentDidMount() {
@@ -12,17 +14,19 @@ class App extends Component {
     this.setState({ socket });
 
     const myName = prompt("Enter your name") || undefined;
-    this.setState({ myName });
-
-    socket.emit("name", myName);
-    socket.on("players", (players, playerOrder) => this.setState({ players, playerOrder }));
+    if (myName) {
+      this.setState({ myName });
+      socket.emit("name", myName);
+    } else {
+      this.setState({ spectating: true });
+      socket.emit("spectator");
+    }
+    socket.on("players", (players, playerOrder, spectators) => this.setState({ players, playerOrder, spectators }));
     socket.on("phase", (phase, activePlayer) => this.setState({ phase, activePlayer }));
     socket.on("word", word => this.setState({ word }));
     socket.on("clues", clues => this.setState({ clues }));
     socket.on("guess", guess => this.setState({ guess }));
     socket.on("judgment", judgment => this.setState({ judgment }));
-
-    // socket.emit("end")
   }
 
   handleChange = (e) => {

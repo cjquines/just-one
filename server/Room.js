@@ -13,13 +13,14 @@ class Room {
     this.phase = "wait"; // "clue", "eliminate", "guess", "judge", "end"
     this.playerOrder = [];
     this.players = {}; // of name => {id, status}
+    this.spectators = [];
     this.word = undefined;
   }
 
   // players
 
   sendPlayers() {
-    this.io.emit("players", this.players, this.playerOrder);
+    this.io.emit("players", this.players, this.playerOrder, this.spectators);
   }
 
   newPlayer(name, socketId) {
@@ -39,11 +40,17 @@ class Room {
     this.sendClues();
   }
 
-  disconnectPlayer(name) {
+  addSpectator(socket) {
+    this.sendState(null, socket);
+    this.spectators.push(socket.id);
+  }
+
+  disconnectPlayer(name, socketId) {
     if (name in this.players) {
       this.players[name].status = "disconnected";
       this.sendPlayers();
     }
+    this.spectators = this.spectators.filter(id => id !== socketId);
   }
 
   kickPlayer(name) {
@@ -66,6 +73,9 @@ class Room {
         this.io.to(this.players[name].id).emit(event, data);
       }
     });
+    this.spectators.map(id => {
+      this.io.to(id).emit(event, data);
+    })
   }
 
   blindClues() {
