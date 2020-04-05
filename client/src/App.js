@@ -34,15 +34,15 @@ class App extends Component {
     socket.on("judgment", judgment => this.setState({ judgment }));
   }
 
-  submitClue = (e) => {
-    this.state.socket.emit("clue", this.state.value);
+  submitClue = (clue) => {
+    this.state.socket.emit("clue", clue);
   }
 
-  submitGuess = (e) => {
-    this.state.socket.emit("guess", this.state.value);
+  submitGuess = (guess) => {
+    this.state.socket.emit("guess", guess);
   }
 
-  submitReveal = (e) => {
+  submitReveal = () => {
     this.state.socket.emit("reveal");
   }
 

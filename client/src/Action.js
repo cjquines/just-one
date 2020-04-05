@@ -16,17 +16,16 @@ class Action extends Component {
     return (
       <div className="Action-Wrapper">
         <input type="text" onChange={this.handleChange}/>
-        <button onClick={this.submitClue}>submit clue</button>
-        <button onClick={this.submitGuess}>submit guess</button>
-        <button onClick={e => this.submitJudge(false)}>judge incorrect</button>
-        <button onClick={e => this.submitJudge(true)}>judge correct</button>
-
-        <button onClick={e => this.handlePhase("clue")}>start clue</button>
-        <button onClick={e => this.handlePhase("eliminate")}>start eliminate</button>
-        <button onClick={e => this.handlePhase("guess")}>start guess</button>
-        <button onClick={e => this.handlePhase("judge")}>start judge</button>
-        <button onClick={e => this.handlePhase("end")}>start end</button>
-        <button onClick={this.submitReveal}>reveal all</button>
+        <button onClick={e => this.props.submitClue(this.state.value)}>submit clue</button>
+        <button onClick={e => this.props.submitGuess(this.state.value)}>submit guess</button>
+        <button onClick={e => this.props.submitJudge(false)}>judge incorrect</button>
+        <button onClick={e => this.props.submitJudge(true)}>judge correct</button>
+        <button onClick={e => this.props.handlePhase("clue")}>start clue</button>
+        <button onClick={e => this.props.handlePhase("eliminate")}>start eliminate</button>
+        <button onClick={e => this.props.handlePhase("guess")}>start guess</button>
+        <button onClick={e => this.props.handlePhase("judge")}>start judge</button>
+        <button onClick={e => this.props.handlePhase("end")}>start end</button>
+        <button onClick={e => this.props.submitReveal()}>reveal all</button>
       </div>
     );
   }
