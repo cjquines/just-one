@@ -20,7 +20,7 @@ class App extends Component {
     socket.on("word", word => this.setState({ word }));
     socket.on("clues", clues => this.setState({ clues }));
     socket.on("guess", guess => this.setState({ guess }));
-    socket.on("judgment", guess => this.setState({ judgment }));
+    socket.on("judgment", judgment => this.setState({ judgment }));
 
     // socket.emit("end")
   }
@@ -87,8 +87,8 @@ class App extends Component {
               <div>
                 {name}
                 {players[name].status}
-                {clues && clues[name].clue}
-                {clues && clues[name].visible}
+                {clues && clues[name] ? clues[name].clue : "typing..."}
+                {clues && clues[name] ? (clues[name].visible ? "visible" : "hidden") : "visible"}
                 <button onClick={e => this.handleKick(name)}>kick</button>
                 <button onClick={e => this.toggleClue(name)}>toggle</button>
               </div>

@@ -28,6 +28,7 @@ class Room {
       if (name === this.activePlayer) this.startPhase("clue");
     } else {
       this.playerOrder.splice(randRange(0, this.playerOrder.length + 1), 0, name);
+      this.clues[name] = { clue: null, visible: true };
     }
 
     this.players[name] = {
@@ -35,6 +36,7 @@ class Room {
       status: "connected",
     };
     this.sendPlayers();
+    this.sendClues();
   }
 
   disconnectPlayer(name) {
@@ -69,7 +71,7 @@ class Room {
   blindClues() {
     const newClues = Object.fromEntries(
       Object.entries(this.clues).map(([name, {clue, visible}]) => 
-        [name, {clue: clue ? "submitted!" : "typing...", visible: visible}]
+        [name, {clue: clue ? "has clue" : "no clue yet", visible: visible}]
       )
     );
     newClues[this.activePlayer].clue = "guessing";
@@ -85,12 +87,13 @@ class Room {
   }
 
   sendClues() {
-    if (this.phase === "clue") {
+    const { phase } = this;
+    if (phase === "clue") {
       this.io.emit("clues", this.blindClues());
-    } else if (this.phase === "eliminate") {
+    } else if (phase === "eliminate") {
       this.toActive("clues", this.blindClues());
       this.toInactive("clues", this.clues);
-    } else if (this.phase in ["guess", "judge", "end"]) {
+    } else if (phase === "guess" || phase === "judge" || phase === "end") {
       this.toActive("clues", this.hiddenClues());
       this.toInactive("clues", this.clues);
     }
@@ -113,17 +116,25 @@ class Room {
   }
 
   sendState(name, socket) {
+    const { phase } = this;
+    socket.emit("phase", phase, this.activePlayer);
+    if (phase === "wait") return;
     let clues = this.clues;
-    if (this.phase === "clue") clues = this.blindClues();
+    if (phase === "clue") clues = this.blindClues();
     if (name === this.activePlayer) {
-      if (this.phase === "eliminate") clues = this.blindClues();
-      else if (this.phase in ["guess", "judge", "end"]) clues = this.hiddenClues();
+      if (phase === "eliminate") {
+        clues = this.blindClues();
+      } else if (phase === "guess" || phase === "judge" || phase === "end") {
+        clues = this.hiddenClues();
+      }
     } else {
       socket.emit("word", this.word);
     }
     socket.emit("clues", clues);
-    if (this.phase in ["guess", "judge", "end"]) socket.emit("guess", this.guess);
-    if (this.phase === "end") socket.emit("judgment", this.judgment);
+    if (phase === "judge" || phase === "end") {
+      socket.emit("guess", this.guess);
+    }
+    if (phase === "end") socket.emit("judgment", this.judgment);
   }
 
   handleClue(name, clue) {
@@ -139,17 +150,20 @@ class Room {
   handleGuess(guess) {
     this.guess = guess;
     this.sendGuess();
+    this.startPhase("judge");
   }
 
   handleJudge(judgment) {
     this.judgment = judgment;
     this.sendJudgment();
+    this.startPhase("end");
   }
 
   handleReveal() {
     for (const name in this.clues) {
       this.clues[name].visible = true;
     }
+    this.sendClues();
   }
 
   startPhase(phase) {
