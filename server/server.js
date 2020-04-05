@@ -22,7 +22,7 @@ io.on("connection", (socket) => {
   socket.on("name", (name_) => {
     name = name_;
     room.newPlayer(name, socket.id);
-    room.sendState(socket);
+    room.sendState(name, socket);
   });
 
   socket.on("disconnect", () => room.disconnectPlayer(name));

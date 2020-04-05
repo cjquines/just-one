@@ -90,7 +90,7 @@ class Room {
     } else if (this.phase === "eliminate") {
       this.toActive("clues", this.blindClues());
       this.toInactive("clues", this.clues);
-    } else if (this.phase === "guess" || this.phase === "judge") {
+    } else if (this.phase in ["guess", "judge", "end"]) {
       this.toActive("clues", this.hiddenClues());
       this.toInactive("clues", this.clues);
     }
@@ -112,7 +112,19 @@ class Room {
     this.io.emit("phase", this.phase, this.activePlayer);
   }
 
-  sendState(socket) {}
+  sendState(name, socket) {
+    let clues = this.clues;
+    if (this.phase === "clue") clues = this.blindClues();
+    if (name === this.activePlayer) {
+      if (this.phase === "eliminate") clues = this.blindClues();
+      else if (this.phase in ["guess", "judge", "end"]) clues = this.hiddenClues();
+    } else {
+      socket.emit("word", this.word);
+    }
+    socket.emit("clues", clues);
+    if (this.phase in ["guess", "judge", "end"]) socket.emit("guess", this.guess);
+    if (this.phase === "end") socket.emit("judgment", this.judgment);
+  }
 
   handleClue(name, clue) {
     this.clues[name].clue = clue;
