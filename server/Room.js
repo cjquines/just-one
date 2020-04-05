@@ -192,9 +192,7 @@ class Room {
       this.word = "soap";
       this.sendClues();
       this.sendWord();
-    } else if (phase === "eliminate") {
-      this.sendClues();
-    } else if (phase === "guess") {
+    } else if (phase === "eliminate" || phase === "guess") {
       this.sendClues();
     }
     this.sendPhase();

@@ -34,33 +34,13 @@ class App extends Component {
     socket.on("judgment", judgment => this.setState({ judgment }));
   }
 
-  submitClue = (clue) => {
-    this.state.socket.emit("clue", clue);
-  }
-
-  submitGuess = (guess) => {
-    this.state.socket.emit("guess", guess);
-  }
-
-  submitReveal = () => {
-    this.state.socket.emit("reveal");
-  }
-
-  handlePhase = (phase) => {
-    this.state.socket.emit("phase", phase);
-  }
-
-  handleKick = (name) => {
-    this.state.socket.emit("kick", name);
-  }
-
-  toggleClue = (name) => {
-    this.state.socket.emit("toggle", name);
-  }
-
-  submitJudge = (judgment) => {
-    this.state.socket.emit("judge", judgment);
-  }
+  handleKick = name => this.state.socket.emit("kick", name);
+  handlePhase = phase => this.state.socket.emit("phase", phase);
+  submitClue = clue => this.state.socket.emit("clue", clue);
+  submitGuess = guess => this.state.socket.emit("guess", guess);
+  submitJudge = judgment => this.state.socket.emit("judge", judgment);
+  submitReveal = () => this.state.socket.emit("reveal");
+  toggleClue = name => this.state.socket.emit("toggle", name);
 
   render() {
     const amActive = this.state.myName === this.state.activePlayer;
