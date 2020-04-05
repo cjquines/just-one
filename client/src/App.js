@@ -44,6 +44,8 @@ class App extends Component {
 
   render() {
     const amActive = this.state.myName === this.state.activePlayer;
+    const myClue = this.state.clues && this.state.clues[this.state.myName].clue;
+
     return (
       <div id="wrapper">
         <Status
@@ -53,13 +55,17 @@ class App extends Component {
           word={this.state.word}
         />
         <Action
+          activePlayer={this.state.activePlayer}
           amActive={amActive}
+          guess={this.state.guess}
           handlePhase={this.handlePhase}
           judgment={this.state.judgment}
+          myClue={myClue}
           phase={this.state.phase}
+          spectating={this.state.spectating}
           submitClue={this.submitClue}
           submitGuess={this.submitGuess}
-          submitJudge={this.submitJudgem}
+          submitJudge={this.submitJudge}
           submitReveal={this.submitReveal}
         />
         <Players
