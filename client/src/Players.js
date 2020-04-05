@@ -33,7 +33,7 @@ class Players extends Component {
     } else if (phase === "eliminate" && amActive) {
       renderedClue = clue ? "submitted" : "no clue";
     } else if (amActive) {
-      renderedClue = visible ? clue : "hidden";
+      renderedClue = (visible && clue) ? clue : "hidden";
     } else {
       renderedClue = clue ? clue : "no clue";
     }
