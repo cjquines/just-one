@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 
 import Players from "./Players.js";
+import Status from "./Status.js";
 
 class App extends Component {
   constructor() {
@@ -67,14 +68,17 @@ class App extends Component {
   render() {
     const { activePlayer, clues, guess, judgment, myName, phase, players, playerOrder, word } = this.state;
 
+    const amActive = this.state.myName === this.state.activePlayer;
+
     return (
       <div id="wrapper">
         {`The phase is ${phase}. The judgment is ${judgment ? "correct" : "incorrect"}.`}
-        <div id="status">
-          {
-            (activePlayer === myName) ? "You are the active player." : `The word is ${word || "nothing"}. The guess was ${guess || "nothing"}.`
-          }
-        </div>
+        <Status
+          activePlayer={this.state.activePlayer}
+          amActive={amActive}
+          phase={this.state.phase}
+          word={this.state.word}
+        />
         <div id="action">
           <input type="text" onChange={this.handleChange}/>
           <button onClick={this.submitClue}>submit clue</button>
@@ -91,14 +95,13 @@ class App extends Component {
         </div>
         <Players
           activePlayer={this.state.activePlayer}
-          amActive={this.state.myName === this.state.activePlayer}
+          amActive={amActive}
           clues={this.state.clues}
           handleKick={this.handleKick}
           toggleClue={this.toggleClue}
           phase={this.state.phase}
           playerOrder={this.state.playerOrder}
           players={this.state.players}
-          socket={this.state.socket}
         />
       </div>
     );

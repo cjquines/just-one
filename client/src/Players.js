@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import socketIOClient from "socket.io-client";
 
 class Players extends Component {
   constructor(props) {
