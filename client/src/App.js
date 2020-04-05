@@ -37,6 +37,10 @@ class App extends Component {
     this.state.socket.emit("guess", this.state.value);
   }
 
+  submitReveal = (e) => {
+    this.state.socket.emit("reveal");
+  }
+
   handlePhase = (phase) => {
     this.state.socket.emit("phase", phase);
   }
@@ -76,6 +80,7 @@ class App extends Component {
           <button onClick={e => this.handlePhase("guess")}>start guess</button>
           <button onClick={e => this.handlePhase("judge")}>start judge</button>
           <button onClick={e => this.handlePhase("end")}>start end</button>
+          <button onClick={this.submitReveal}>reveal all</button>
         </div>
         <div id="players">
           {playerOrder && playerOrder.map(name => (

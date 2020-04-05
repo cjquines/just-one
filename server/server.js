@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
   socket.on("toggle", name_ => room.toggleClue(name_));
   socket.on("guess", guess => room.handleGuess(guess));
   socket.on("judge", judgement => room.handleJudge(judgement));
-  socket.on("end", action => room.handleEnd(action));
+  socket.on("reveal", () => room.handleReveal());
 });
 
 // serve

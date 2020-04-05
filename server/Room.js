@@ -134,7 +134,11 @@ class Room {
     this.sendJudgment();
   }
 
-  handleEnd(action) {}
+  handleReveal() {
+    for (const name in this.clues) {
+      this.clues[name].visible = true;
+    }
+  }
 
   startPhase(phase) {
     this.phase = phase;
