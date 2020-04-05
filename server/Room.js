@@ -75,11 +75,22 @@ class Room {
     return newClues;
   }
 
+  hiddenClues() {
+    return Object.fromEntries(
+      Object.entries(this.clues).map(([name, {clue, visible}]) => 
+        [name, {clue: visible ? clue : "hidden!", visible: visible}]
+      )
+    );
+  }
+
   sendClues() {
     if (this.phase === "clue") {
       this.io.emit("clues", this.blindClues());
     } else if (this.phase === "eliminate") {
       this.toActive("clues", this.blindClues());
+      this.toInactive("clues", this.clues);
+    } else if (this.phase === "guess") {
+      this.toActive("clues", this.hiddenClues());
       this.toInactive("clues", this.clues);
     }
   }
@@ -88,7 +99,10 @@ class Room {
     this.toInactive("word", this.word);
   }
 
-  sendGuess() {}
+  sendGuess() {
+    this.io.emit("guess", this.guess);
+  }
+
   sendPhase() {
     this.io.emit("phase", this.phase, this.activePlayer);
   }
@@ -105,7 +119,11 @@ class Room {
     this.sendClues();
   }
 
-  handleGuess(guess) {}
+  handleGuess(guess) {
+    this.guess = guess;
+    this.sendGuess();
+  }
+
   handleJudge(judgement) {}
   handleEnd(action) {}
 
@@ -126,6 +144,8 @@ class Room {
       this.sendClues();
       this.sendWord();
     } else if (phase === "eliminate") {
+      this.sendClues();
+    } else if (phase === "guess") {
       this.sendClues();
     }
     this.sendPhase();
