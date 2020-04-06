@@ -42,14 +42,18 @@ class Players extends Component {
     } else if (phase === "eliminate" && amActive) {
       renderedClue = clue ? "submitted" : "no clue";
     } else if (amActive) {
-      renderedClue = (visible && clue) ? clue : "hidden";
+      renderedClue = visible ? (clue ? clue : "no clue") : "hidden";
     } else {
       renderedClue = clue ? clue : "no clue";
     }
 
-    if (active) renderedClue = "guessing";
+    if (active) {
+      className += " guessing";
+      renderedClue = "guessing";
+    }
+
     if (!visible) className += " hidden";
-    if (!clue) className += " notSubmitted";
+    if (renderedClue === "no clue") className += " notSubmitted";
 
     return (<span className={className}>{renderedClue}</span>);
   }
@@ -60,8 +64,8 @@ class Players extends Component {
 
     const name_ = (
       <td>
-        {this.renderName(name)}
         <button className="Players-Kick" onClick={e => this.props.handleKick(name)}>kick</button>
+        {this.renderName(name)}
       </td>
     );
 
@@ -89,7 +93,7 @@ class Players extends Component {
     let thead = [(<th key="name">name</th>)];
     if (phase !== "wait") thead.push(<th key="clue">clue</th>);
     if (phase !== "wait" && phase !== "clue" && !amActive) {
-      thead.push(<th key="visible">visible?</th>);
+      thead.push(<th key="visible" style={{width: "4em"}}>visible?</th>);
     }
 
     let spect = null;

@@ -16,13 +16,11 @@ remember to change `App.js` to have `socketIOClient(window.location.hostname + "
 
 ## todo
 
-- style no clue differently
 - add more metadata i guess
 - allow clue resubmission (send clues to writer)
 - next round should be harder to press accidentally
 - score?? maybe?? 
 - add more metadata to websocket emits? (should check if emitter still in game, at least)
-- "i'm about to read guessing as a clue"
 - guess should be visible at the end
 - button for asking people to guess again
 - reconnecting as the guesser should not trigger next round
@@ -34,5 +32,4 @@ remember to change `App.js` to have `socketIOClient(window.location.hostname + "
 - a log would be nice (a la castlefall?)
 - sanitize names, clues, and guesses
 - "add clues" feature after a round ends?
-- style table column widths
 - add a timer? or like, a timer that counts up, resetting every phase

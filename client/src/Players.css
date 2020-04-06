@@ -7,7 +7,6 @@
 
 .Players-Wrapper button {
   font-size: 0.8em;
-  float: left;
   height: 1.5em;
   padding: 0 0.75em 0.25em;
 }
@@ -15,6 +14,8 @@
 .Players-Table {
   border: none;
   border-spacing: 0;
+  table-layout: fixed;
+  width: 100%;
 }
 
 .Players-Table td, .Players-Table th {
@@ -25,6 +26,6 @@
   background-color: #edeff0;
 }
 
-.hidden {
-  color: #ddd;
+.guessing, .hidden, .notSubmitted {
+  color: #ccc;
 }
