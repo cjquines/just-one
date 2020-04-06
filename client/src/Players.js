@@ -90,7 +90,7 @@ class Players extends Component {
     if (phase !== "wait") thead.push(<th key="clue">clue</th>);
     if (phase !== "wait" && phase !== "clue" && !amActive) {
       thead.push(<th key="visible" style={{width: "4em"}}>visible?</th>);
-    } else {
+    } else if (phase !== "wait") {
       thead.push(<th style={{width: "4em"}}></th>);
     }
 
