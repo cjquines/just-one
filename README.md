@@ -30,6 +30,7 @@ remember to change `App.js` to have `socketIOClient(window.location.hostname + "
 - i think if the answer is (case-insensitively) exactly right you should autoaccept
 - clues that are case-insensitively identical should autohide
 - implement rooms
+  - automatically close room instance when everyone's disconnected after a while? how does one do this
 - a log would be nice (a la castlefall?)
 - sanitize names, clues, and guesses
 - "add clues" feature after a round ends?
