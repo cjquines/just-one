@@ -1,6 +1,7 @@
 .Action-Wrapper {
   display: flex;
   flex-direction: column;
+  height: 5em;
   justify-content: center;
 }
 

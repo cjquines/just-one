@@ -41,7 +41,6 @@ class Action extends Component {
       } else {
         message = "write a clue!";
         showInput = true;
-        buttons.push(<button key="next" onClick={e => this.props.handlePhase("eliminate")}>compare clues</button>);
         // (<button onClick={e => this.props}>new word</button>),
       }
     } else if (phase === "eliminate") {
