@@ -69,10 +69,10 @@ class Action extends Component {
       }
     } else if (phase === "end") {
       if (amActive && !word) {
-        message = judgment ? `your guess ${guess} was right!` : `your guess ${guess} was wrong :(`;
+        message = judgment ? `your guess, ${guess}, was right!` : `your guess, ${guess}, was wrong :(`;
         buttons.push(<button key="guessAgain" onClick={e => this.props.handlePhase("guess")}>guess again</button>);
       } else if (amActive && word) {
-        message = judgment ? `your guess ${guess} was right!` : `your guess ${guess} was wrong. the word was ${word}.`;
+        message = judgment ? `your guess, ${guess}, was right!` : `your guess, ${guess}, was wrong. the word was ${word}.`;
         buttons.push(<button key="revealClues" onClick={e => this.props.submitReveal("clues")}>reveal clues</button>);
       } else if (spectating) {
         message = judgment ? `${activePlayer}’s guess ${guess} was right!` : `${activePlayer}’s guess ${guess} was wrong :(`;
