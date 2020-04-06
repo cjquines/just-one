@@ -33,7 +33,7 @@ io.on("connection", (socket) => {
   socket.on("toggle", name_ => room.toggleClue(name_));
   socket.on("guess", guess => room.handleGuess(guess));
   socket.on("judge", judgement => room.handleJudge(judgement));
-  socket.on("reveal", () => room.handleReveal());
+  socket.on("reveal", thing => room.handleReveal(thing));
 });
 
 const port = process.env.PORT || 4001;

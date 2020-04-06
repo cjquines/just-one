@@ -21,8 +21,6 @@ remember to change `App.js` to have `socketIOClient(window.location.hostname + "
 - next round should be harder to press accidentally
 - score?? maybe?? 
 - add more metadata to websocket emits? (should check if emitter still in game, at least)
-- guess should be visible at the end
-- button for asking people to guess again
 - make pressing enter submit the clue
 - i think if the answer is (case-insensitively) exactly right you should autoaccept
 - clues that are case-insensitively identical should autohide

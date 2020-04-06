@@ -112,6 +112,7 @@ class Room {
   }
 
   sendWord() {
+    this.toActive("word", "");
     this.toInactive("word", this.word);
   }
 
@@ -142,6 +143,7 @@ class Room {
       } else if (phase === "guess" || phase === "judge" || phase === "end") {
         clues = this.hiddenClues();
       }
+      socket.emit("word", "");
     } else {
       socket.emit("word", this.word);
     }
@@ -174,11 +176,13 @@ class Room {
     this.startPhase("end");
   }
 
-  handleReveal() {
-    for (const name in this.clues) {
-      this.clues[name].visible = true;
+  handleReveal(thing) {
+    if (thing === "clues") {
+      for (const name in this.clues) this.clues[name].visible = true;
+      this.sendClues(); 
+    } else if (thing === "word") {
+      this.toActive("word", this.word);
     }
-    this.sendClues();
   }
 
   startPhase(phase) {

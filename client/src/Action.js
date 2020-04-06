@@ -24,7 +24,7 @@ class Action extends Component {
   }
 
   render() {
-    const { activePlayer, amActive, guess, judgment, myClue, phase, spectating } = this.props;
+    const { activePlayer, amActive, guess, judgment, myClue, phase, spectating, word } = this.props;
 
     let message = "";
     let showInput = false;
@@ -69,14 +69,18 @@ class Action extends Component {
         buttons.push(<button key="right" onClick={e => this.props.submitJudge(true)}>yep</button>);
       }
     } else if (phase === "end") {
-      if (amActive) {
-        message = judgment ? "you got it right!" : "you were wrong :(";
+      if (amActive && !word) {
+        message = judgment ? `your guess ${guess} was right!` : `your guess ${guess} was wrong :(`;
+        buttons.push(<button key="guessAgain" onClick={e => this.props.handlePhase("guess")}>guess again</button>);
+      } else if (amActive && word) {
+        message = judgment ? `your guess ${guess} was right!` : `your guess ${guess} was wrong. the word was ${word}.`;
+        buttons.push(<button key="revealClues" onClick={e => this.props.submitReveal("clues")}>reveal clues</button>);
       } else if (spectating) {
-        message = judgment ? `${activePlayer} got it right!` : `${activePlayer} got it wrong :(`;
+        message = judgment ? `${activePlayer}’s guess ${guess} was right!` : `${activePlayer}’s guess ${guess} was wrong :(`;
       } else {
-        message = judgment ? `${activePlayer} got it right!` : `${activePlayer} got it wrong :(`;
-        buttons.push(<button key="reveal" onClick={e => this.props.submitReveal()}>reveal clues</button>);
-        // buttons.push(<button onClick={e => this.props.submitReveal()}>reveal word</button>);
+        message = judgment ? `${activePlayer}’s guess ${guess} was right!` : `${activePlayer}’s guess ${guess} was wrong :(`;
+        buttons.push(<button key="revealClues" onClick={e => this.props.submitReveal("clues")}>reveal clues</button>);
+        buttons.push(<button key="revealWord" onClick={e => this.props.submitReveal("word")}>reveal word</button>);
       }
     }
     

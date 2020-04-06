@@ -42,7 +42,7 @@ class App extends Component {
   submitClue = clue => this.socket.emit("clue", clue);
   submitGuess = guess => this.socket.emit("guess", guess);
   submitJudge = judgment => this.socket.emit("judge", judgment);
-  submitReveal = () => this.socket.emit("reveal");
+  submitReveal = thing => this.socket.emit("reveal", thing);
   toggleClue = name => this.socket.emit("toggle", name);
 
   render() {
@@ -69,6 +69,7 @@ class App extends Component {
           submitGuess={this.submitGuess}
           submitJudge={this.submitJudge}
           submitReveal={this.submitReveal}
+          word={this.state.word}
         />
         <Players
           activePlayer={this.state.activePlayer}
