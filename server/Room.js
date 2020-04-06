@@ -155,8 +155,10 @@ class Room {
   }
 
   handleClue(name, clue) {
-    this.clues[name].clue = clue;
-    this.sendClues();
+    if (phase === "clue") {
+      this.clues[name].clue = clue;
+      this.sendClues();
+    }
   }
 
   toggleClue(name) {
@@ -165,15 +167,19 @@ class Room {
   }
 
   handleGuess(guess) {
-    this.guess = guess;
-    this.sendGuess();
-    this.startPhase("judge");
+    if (phase === "guess") {
+      this.guess = guess;
+      this.sendGuess();
+      this.startPhase("judge");
+    }
   }
 
   handleJudge(judgment) {
-    this.judgment = judgment;
-    this.sendJudgment();
-    this.startPhase("end");
+    if (phase === "judge") {
+      this.judgment = judgment;
+      this.sendJudgment();
+      this.startPhase("end");
+    }
   }
 
   handleReveal(thing) {
@@ -186,7 +192,9 @@ class Room {
   }
 
   startPhase(phase) {
+    if (phase !== "clue" && this.phase === phase) return;
     this.phase = phase;
+    
     if (phase === "clue") {
       if (this.activePlayer) {
         const ind = this.playerOrder.indexOf(this.activePlayer);
