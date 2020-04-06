@@ -18,7 +18,7 @@ class App extends Component {
 
   componentDidMount() {
     const socket = socketIOClient(window.location.hostname + ":" + 4001);
-    this.setState({ socket });
+    this.socket = socket;
 
     const myName = prompt("Enter your name") || undefined;
     if (myName) {
@@ -36,13 +36,13 @@ class App extends Component {
     socket.on("judgment", judgment => this.setState({ judgment }));
   }
 
-  handleKick = name => this.state.socket.emit("kick", name);
-  handlePhase = phase => this.state.socket.emit("phase", phase);
-  submitClue = clue => this.state.socket.emit("clue", clue);
-  submitGuess = guess => this.state.socket.emit("guess", guess);
-  submitJudge = judgment => this.state.socket.emit("judge", judgment);
-  submitReveal = () => this.state.socket.emit("reveal");
-  toggleClue = name => this.state.socket.emit("toggle", name);
+  handleKick = name => this.socket.emit("kick", name);
+  handlePhase = phase => this.socket.emit("phase", phase);
+  submitClue = clue => this.socket.emit("clue", clue);
+  submitGuess = guess => this.socket.emit("guess", guess);
+  submitJudge = judgment => this.socket.emit("judge", judgment);
+  submitReveal = () => this.socket.emit("reveal");
+  toggleClue = name => this.socket.emit("toggle", name);
 
   render() {
     const amActive = this.state.myName === this.state.activePlayer;
