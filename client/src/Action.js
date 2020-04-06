@@ -35,8 +35,8 @@ class Action extends Component {
     } else if (phase === "clue") {
       if (amActive || spectating) {
         message = "waiting for clues...";
-      } else if (myClue) {
-        message = `you wrote ${this.state.input}. waiting for others...`;
+      } else if (this.state.input || myClue) {
+        message = `you wrote ${this.state.input || myClue}. waiting for others...`;
         buttons.push(<button key="next" onClick={e => this.props.handlePhase("eliminate")}>compare clues</button>);
       } else {
         message = "write a clue!";

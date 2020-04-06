@@ -17,7 +17,7 @@ remember to change `App.js` to have `socketIOClient(window.location.hostname + "
 ## todo
 
 - add more metadata i guess
-- allow clue resubmission (send clues to writer)
+- allow clue resubmission
 - next round should be harder to press accidentally
 - score?? maybe?? 
 - add more metadata to websocket emits? (should check if emitter still in game, at least)

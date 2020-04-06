@@ -133,7 +133,10 @@ class Room {
     socket.emit("phase", phase, this.activePlayer);
     if (phase === "wait") return;
     let clues = this.clues;
-    if (phase === "clue") clues = this.blindClues();
+    if (phase === "clue") {
+      clues = this.blindClues();
+      if (this.clues[name].clue) socket.emit("myClue", this.clues[name].clue);
+    }
     if (name === this.activePlayer) {
       if (phase === "eliminate") {
         clues = this.blindClues();

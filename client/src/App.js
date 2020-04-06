@@ -31,6 +31,7 @@ class App extends Component {
     socket.on("players", (players, playerOrder, spectators) => this.setState({ players, playerOrder, spectators }));
     socket.on("phase", (phase, activePlayer) => this.setState({ phase, activePlayer }));
     socket.on("word", word => this.setState({ word }));
+    socket.on("myClue", myClue => this.setState({ myClue }));
     socket.on("clues", clues => this.setState({ clues }));
     socket.on("guess", guess => this.setState({ guess }));
     socket.on("judgment", judgment => this.setState({ judgment }));
@@ -46,7 +47,6 @@ class App extends Component {
 
   render() {
     const amActive = this.state.myName === this.state.activePlayer;
-    const myClue = this.state.clues && this.state.clues[this.state.myName].clue;
 
     return (
       <div className="App-Wrapper">
@@ -62,7 +62,7 @@ class App extends Component {
           guess={this.state.guess}
           handlePhase={this.handlePhase}
           judgment={this.state.judgment}
-          myClue={myClue}
+          myClue={this.state.myClue}
           phase={this.state.phase}
           spectating={this.state.spectating}
           submitClue={this.submitClue}
