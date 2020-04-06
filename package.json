@@ -10,7 +10,7 @@
     "socket.io": "^2.3.0"
   },
   "scripts": {
-    "start": "nodemon",
+    "start": "node server/server.js",
     "hotloader": "cd client && npm start"
   }
 }
