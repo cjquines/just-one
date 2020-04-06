@@ -49,7 +49,7 @@ class Room {
   }
 
   disconnectPlayer(name, socketId) {
-    if (name in this.players && this.players[name] === socketId) {
+    if (name in this.players && this.players[name].id === socketId) {
       this.players[name].status = "disconnected";
     }
     this.spectators = this.spectators.filter(id => id !== socketId);
