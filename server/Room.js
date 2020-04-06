@@ -28,7 +28,6 @@ class Room {
   newPlayer(name, socketId) {
     if (name in this.players) {
       this.io.to(this.players[name].id).emit("phase", "disconnected", null);
-      if (name === this.activePlayer) this.startPhase("clue");
     } else {
       this.playerOrder.splice(randRange(0, this.playerOrder.length + 1), 0, name);
       this.clues[name] = { clue: null, visible: true };
