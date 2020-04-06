@@ -5,6 +5,8 @@ import Action from "./Action.js";
 import Players from "./Players.js";
 import Status from "./Status.js";
 
+import "./App.css";
+
 class App extends Component {
   constructor() {
     super();
@@ -47,7 +49,7 @@ class App extends Component {
     const myClue = this.state.clues && this.state.clues[this.state.myName].clue;
 
     return (
-      <div id="wrapper">
+      <div className="App-Wrapper">
         <Status
           activePlayer={this.state.activePlayer}
           amActive={amActive}

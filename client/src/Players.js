@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import "./Players.css";
+
 class Players extends Component {
   constructor(props) {
     super(props);
@@ -22,8 +24,15 @@ class Players extends Component {
 
   renderClue = (name) => {
     const { amActive, phase } = this.props;
-    const { clue, visible } = this.props.clues[name];
     const active = name === this.props.activePlayer;
+
+    let clue = undefined;
+    let visible = true;
+
+    if (this.props.clues && name in this.props.clues) {
+      clue = this.props.clues[name].clue;
+      visible = this.props.clues[name].visible;
+    }
 
     let renderedClue = "";
     let className = "Players-Clue";
@@ -47,6 +56,8 @@ class Players extends Component {
 
   renderPlayer = (name) => {
     const { amActive, phase } = this.props;
+    const active = name === this.props.activePlayer;
+
     const name_ = (
       <td>
         {this.renderName(name)}
@@ -63,6 +74,8 @@ class Players extends Component {
 
     if (phase === "clue" || amActive) {
       return (<tr key={name}>{name_}{clue}</tr>);
+    } else if (active) {
+      return (<tr key={name}>{name_}{clue}<td></td></tr>);
     }
     return (<tr key={name}>{name_}{clue}{toggle}</tr>);
   }

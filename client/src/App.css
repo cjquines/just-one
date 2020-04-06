@@ -1,0 +1,39 @@
+@import url('//fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+@media all and (min-width:760px) {body {font-size: 23px}}
+@media all and (max-width:760px) {body {font-size: 22px}}
+@media all and (max-width:720px) {body {font-size: 21px}}
+@media all and (max-width:680px) {body {font-size: 20px}}
+@media all and (max-width:640px) {body {font-size: 19px}}
+@media all and (max-width:600px) {body {font-size: 18px}}
+@media all and (max-width:560px) {body {font-size: 17px}}
+@media all and (max-width:520px) {body {font-size: 16px}}
+@media all and (max-width:400px) {body {font-size: 15px}}
+@media all and (max-width:360px) {body {font-size: 14px}}
+@media all and (max-width:330px) {body {font-size: 13px}}
+@media all and (max-width:300px) {body {font-size: 12px}}
+
+.App-Wrapper {
+  font-family: "Lato", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", "Verdana", sans-serif;
+  margin: 0 auto;
+  max-width: 40em;
+}
+
+button {
+  background-color: #26a69a;
+  border-radius: 2px;
+  border: none;
+  color: #fff;
+  font: inherit;
+  height: 2em;
+  margin: 0 0.25em;
+  padding: 0 1em 0.25em;
+  text-align: center;
+  text-decoration: none;
+  transition: 0.3s background-color;
+}
+
+button:hover {
+  background-color: #2bbbad;
+  transition: 0.3s background-color;
+}
