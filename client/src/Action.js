@@ -41,7 +41,6 @@ class Action extends Component {
       } else {
         message = "write a clue!";
         showInput = true;
-        // (<button onClick={e => this.props}>new word</button>),
       }
     } else if (phase === "eliminate") {
       if (amActive || spectating) {

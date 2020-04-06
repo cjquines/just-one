@@ -60,8 +60,6 @@ class Players extends Component {
 
   renderPlayer = (name) => {
     const { amActive, phase } = this.props;
-    const active = name === this.props.activePlayer;
-
     const name_ = (
       <td>
         <button className="Players-Kick" onClick={e => this.props.handleKick(name)}>kick</button>

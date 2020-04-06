@@ -135,7 +135,7 @@ class Room {
     let clues = this.clues;
     if (phase === "clue") {
       clues = this.blindClues();
-      if (this.clues[name].clue) socket.emit("myClue", this.clues[name].clue);
+      if (name in this.clues && this.clues[name].clue) socket.emit("myClue", this.clues[name].clue);
     }
     if (name === this.activePlayer) {
       if (phase === "eliminate") {
@@ -194,7 +194,7 @@ class Room {
   startPhase(phase) {
     if (phase !== "clue" && this.phase === phase) return;
     this.phase = phase;
-    
+
     if (phase === "clue") {
       if (this.activePlayer) {
         const ind = this.playerOrder.indexOf(this.activePlayer);

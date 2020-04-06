@@ -19,7 +19,6 @@ remember to change `App.js` to have `socketIOClient(window.location.hostname + "
 - add more metadata i guess
 - allow clue resubmission
 - score?? maybe?? 
-- add more metadata to websocket emits? (should check if emitter still in game, at least)
 - make pressing enter submit the clue
 - i think if the answer is (case-insensitively) exactly right you should autoaccept
 - clues that are case-insensitively identical should autohide
