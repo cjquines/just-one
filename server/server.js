@@ -2,15 +2,16 @@ const Room = require("./Room");
 const express = require("express");
 const app = express();
 const path = require("path");
-const http = require("http").createServer(app);
-const io = require("socket.io")(http);
 
-const reactPath = path.resolve(__dirname, "..", "client", "dist");
+const reactPath = path.resolve(__dirname, "..", "client", "build");
 app.use(express.static(reactPath));
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(reactPath, "index.html"));
 });
+
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 
 let room = new Room(io);
 
@@ -35,6 +36,8 @@ io.on("connection", (socket) => {
   socket.on("reveal", () => room.handleReveal());
 });
 
-http.listen(process.env.PORT || 4001, () => {
-  console.log("listening!");
+const port = process.env.PORT || 4001;
+
+http.listen(port, () => {
+  console.log(`listening on port ${port}`);
 });

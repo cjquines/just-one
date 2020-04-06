@@ -17,7 +17,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const socket = socketIOClient("http://localhost:4001");
+    const socket = socketIOClient(window.location.hostname + ":" + 4001);
     this.setState({ socket });
 
     const myName = prompt("Enter your name") || undefined;
