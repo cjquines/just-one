@@ -77,8 +77,6 @@ class Players extends Component {
     const toggle = (<td><button onClick={e => this.props.toggleClue(name)}>toggle</button></td>);
 
     if (phase === "clue" || amActive) {
-      return (<tr key={name}>{name_}{clue}</tr>);
-    } else if (active) {
       return (<tr key={name}>{name_}{clue}<td></td></tr>);
     }
     return (<tr key={name}>{name_}{clue}{toggle}</tr>);
@@ -94,6 +92,8 @@ class Players extends Component {
     if (phase !== "wait") thead.push(<th key="clue">clue</th>);
     if (phase !== "wait" && phase !== "clue" && !amActive) {
       thead.push(<th key="visible" style={{width: "4em"}}>visible?</th>);
+    } else {
+      thead.push(<th style={{width: "4em"}}></th>);
     }
 
     return (
