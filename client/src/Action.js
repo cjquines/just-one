@@ -83,14 +83,10 @@ class Action extends Component {
       }
     }
     
-    if (!spectating) {
-      if (phase === "wait") {
-        buttons.push(<button key="skip" onClick={e => this.props.handlePhase("clue")}>start game</button>);
-      } else if (phase !== "end") {
-        buttons.push(<button key="skip" className="unfocused" onClick={e => this.props.handlePhase("clue")}>next round</button>);
-      } else {
-        buttons.push(<button key="skip" onClick={e => this.props.handlePhase("clue")}>next round</button>);
-      }
+    if (!spectating && phase === "wait") {
+      buttons.push(<button key="skip" onClick={e => this.props.handlePhase("clue")}>start game</button>);
+    } else if (!spectating && phase === "end") {
+      buttons.push(<button key="skip" onClick={e => this.props.handlePhase("clue")}>next round</button>);
     }
 
     return (

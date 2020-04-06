@@ -85,7 +85,7 @@ class Players extends Component {
   }
 
   render() {
-    const { amActive, phase, playerOrder, spectators } = this.props;
+    const { amActive, phase, playerOrder } = this.props;
 
     if (phase === "disconnected") return (<div className="Players-Wrapper"></div>);
     if (!playerOrder) return (<div className="Players-Wrapper">Loading!</div>);
@@ -96,19 +96,12 @@ class Players extends Component {
       thead.push(<th key="visible" style={{width: "4em"}}>visible?</th>);
     }
 
-    let spect = null;
-    if (spectators) spect = spectators.length;
-    if (spect === 0) spect = null;
-    else if (spect === 1) spect += " spectator";
-    else if (spect > 1) spect += " spectators";
-
     return (
       <div className="Players-Wrapper">
         <table className="Players-Table">
           <thead><tr>{thead}</tr></thead>
           <tbody>{playerOrder.map(name => this.renderPlayer(name))}</tbody>
         </table>
-        {spect && (<span className="Players-Spectators">{spect}</span>)}
       </div>
     );
   }

@@ -4,6 +4,7 @@ import socketIOClient from "socket.io-client";
 import Action from "./Action.js";
 import Players from "./Players.js";
 import Status from "./Status.js";
+import Subaction from "./Subaction.js";
 
 import "./App.css";
 
@@ -80,6 +81,11 @@ class App extends Component {
           phase={this.state.phase}
           playerOrder={this.state.playerOrder}
           players={this.state.players}
+        />
+        <Subaction
+          handlePhase={this.handlePhase}
+          phase={this.state.phase}
+          spectating={this.state.spectating}
           spectators={this.state.spectators}
         />
       </div>
