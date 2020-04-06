@@ -6,8 +6,8 @@ why a web app, when the game works perfectly fine without one? because social di
 
 ## todo
 
-- style
 - get a wordlist
+- style better
 - implement rooms
 - deploy somewhere
 - add more metadata i guess

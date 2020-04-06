@@ -1,3 +1,5 @@
+const words = require("./beta.json")["words"];
+
 function randRange(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
@@ -190,7 +192,7 @@ class Room {
         this.clues[name] = { clue: null, visible: true };
       });
       this.clues[this.activePlayer].clue = "guessing";
-      this.word = "soap";
+      this.word = words[randRange(0, words.length)];
       this.sendClues();
       this.sendWord();
     } else if (phase === "eliminate" || phase === "guess") {
