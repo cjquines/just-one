@@ -55,6 +55,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("name", (name_) => {
+    if (room == undefined)
+      return;
     name = name_;
     const oldId = room.newPlayer(name, socket.id);
     if (oldId in clients) {

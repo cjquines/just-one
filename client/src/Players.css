@@ -16,8 +16,24 @@
   padding: 0.5em 0.25em;
 }
 
+.Players-ToggleCell {
+  text-align: right;
+}
+
 .Players-Table tbody tr:nth-child(2n+1) {
   background-color: #edeff0;
+}
+
+.Players-ToggledOffToggle {
+  background-color: #888;
+}
+
+.Players-ToggledOffToggle:hover {
+  background-color: #999;
+}
+
+.toggledOff {
+  text-decoration: line-through;
 }
 
 .guessing, .hidden, .notSubmitted {
