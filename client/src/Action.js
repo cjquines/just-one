@@ -70,13 +70,10 @@ class Action extends Component {
         buttons.push(<button key="guessAgain" onClick={e => this.props.handlePhase("guess")}>guess again</button>);
       } else if (amActive && word) {
         message = <span>your guess, {guess}, was { judgment ? `right!` : ` wrong. the word was ${word}.` }</span>;
-        buttons.push(<button key="revealClues" onClick={e => this.props.submitReveal("clues")}>reveal clues</button>);
       } else if (spectating) {
         message = <span>{activePlayer}’s guess, {guess}, was { judgment ? `right!` : ` wrong :(` }</span>;
       } else {
         message = <span>{activePlayer}’s guess, {guess}, was { judgment ? `right!` : ` wrong :(` }</span>;
-        buttons.push(<button key="revealClues" onClick={e => this.props.submitReveal("clues")}>reveal clues</button>);
-        if (!judgment) buttons.push(<button key="revealWord" onClick={e => this.props.submitReveal("word")}>reveal word</button>);
       }
     }
     
