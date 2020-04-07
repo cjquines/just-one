@@ -4,9 +4,9 @@ a web app for playing [just one](https://boardgamegeek.com/boardgame/254640/just
 
 ![](sample.png)
 
-in each round, the guesser is trying to guess a word. everyone ot
+in each round, the guesser is trying to guess a word. everyone not guessing writes a single-word clue. then everyone compares clues, and hides clues that are the same. they show the clues to the guesser, who then tries to guess the word.
 
-you can join rooms by going directly to https://just1.herokuapp.com/room/example, for example.
+you can join room example by going directly to https://just1.herokuapp.com/room/example. if you don’t type a name when prompted, you spectate the room.
 
 ## implementation details
 
