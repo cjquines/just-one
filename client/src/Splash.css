@@ -1,0 +1,30 @@
+html, body, #root, .App-Wrapper, .App-Wrapper > div, .Splash-Wrapper {
+  height: 100%;
+}
+
+.Splash-Wrapper form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 14em;
+}
+
+.Splash-Copy {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 4em);
+  justify-content: center;
+  min-height: 15em;
+  text-align: center;
+}
+
+.Splash-Copy form span {
+  margin: 0.25em;
+}
+
+.Splash-Copy form button {
+  margin: 0.25em;
+  width: 13em;
+}

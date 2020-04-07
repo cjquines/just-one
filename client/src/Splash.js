@@ -27,19 +27,30 @@ class Splash extends Component {
     return (
       <div className="Splash-Wrapper">
         <NavBar />
-        <form onSubmit={this.submit}>
-          <input
-            onChange={this.handleChangeRoom}
-            type="text"
-            value={this.state.room}
-          />
-          <input
-            onChange={this.handleChangeName}
-            type="text"
-            value={this.state.name}
-          />
-          <button type="submit">send</button>
-        </form>
+        <div className="Splash-Copy">
+          <form onSubmit={this.submit}>
+            <span>
+              <label htmlFor="room">room:</label>
+              <input
+                id="room"
+                onChange={this.handleChangeRoom}
+                type="text"
+                value={this.state.room}
+              />
+            </span>
+            <span>
+              <label htmlFor="name">name:</label>
+              <input
+                id="name"
+                onChange={this.handleChangeName}
+                type="text"
+                value={this.state.name}
+              />
+            </span>
+            <button type="submit">go!</button>
+          </form>
+          <p>by <a href="https://cjquines.com/">cjquines</a> · <a href="https://github.com/cjquines/just-one/">github</a></p>
+        </div>
       </div>
     );
   }

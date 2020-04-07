@@ -77,3 +77,16 @@ input:focus {
   outline: none;
   transition: 0.3s border-bottom;
 }
+
+a {
+  border-bottom: 2px solid #fff;
+  box-sizing: border-box;
+  color: #26a69a;
+  text-decoration: none;
+  transition: 0.3s border-bottom;
+}
+
+a:hover {
+  border-bottom: 2px solid #26a69a;
+  transition: 0.3s border-bottom;
+}

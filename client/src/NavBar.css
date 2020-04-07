@@ -5,20 +5,5 @@
 }
 
 .NavBar-Home {
-  border-bottom: 2px solid #fff;
-  box-sizing: border-box;
-  color: #26a69a;
   font-weight: bold;
-  order: 0;
-  text-decoration: none;
-  transition: 0.3s border-bottom;
-}
-
-.NavBar-Home:hover {
-  border-bottom: 2px solid #26a69a;
-  transition: 0.3s border-bottom;
-}
-
-.NavBar-Room, .NavBar-Wrapper button {
-  order: 2;
 }
