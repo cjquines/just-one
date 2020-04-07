@@ -136,6 +136,14 @@ class Room extends Component {
         isCurrRound={i === 0}
         round={round}
       />);
+      if (i === 0) {
+        roundsJsx.push(<Subaction
+          handlePhase={this.handlePhase}
+          phase={this.state.phase}
+          spectating={this.state.spectating}
+          spectators={this.state.spectators}
+        />);
+      }
     }
 
     return (
@@ -168,12 +176,6 @@ class Room extends Component {
           submitReveal={this.submitReveal}
         />
         {roundsJsx}
-        <Subaction
-          handlePhase={this.handlePhase}
-          phase={this.state.phase}
-          spectating={this.state.spectating}
-          spectators={this.state.spectators}
-        />
       </div>
     );
   }
