@@ -67,7 +67,7 @@ class Players extends Component {
     const clue = (<td>{this.renderClue(name)}</td>);
     const toggle = (<td className="Players-ToggleCell"><button className="small" onClick={e => this.props.toggleClue(name)}>toggle</button></td>);
 
-    if (spectating || phase === "clue" || amActive) {
+    if (spectating || phase === "clue" || amActive || !(this.props.clues && name in this.props.clues && this.props.clues[name].clue)) {
       return (<tr key={name}>{name_}{clue}<td></td></tr>);
     }
     return (<tr key={name}>{name_}{clue}{toggle}</tr>);
