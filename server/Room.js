@@ -119,7 +119,6 @@ class Room {
         [name, {clue: Boolean(clue), visible: visible}]
       )
     );
-    newClues[this.activePlayer].clue = "guessing";
     return newClues;
   }
 

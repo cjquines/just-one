@@ -48,6 +48,7 @@ class Room extends Component {
       const round = this.getCurrRound();
       if (round === undefined || round.roundId !== roundId) {
         // make new round
+        setCurrRoundState({ playerOrder: { $set: this.state.playerOrder } });
         this.setState(state => update(state, {
           phase: { $set: phase },
           rounds: {
@@ -220,8 +221,8 @@ function Round(props){
       handleKick={props.handleKick}
       key={props.key_}
       phase={props.isCurrRound ? props.phase : "end"}
-      playerOrder={props.playerOrder}
-      players={props.players}
+      playerOrder={props.round.playerOrder || props.playerOrder}
+      players={props.isCurrRound ? (props.players) : false}
       spectating={props.isCurrRound ? props.spectating : true}
       toggleClue={props.toggleClue}
     />

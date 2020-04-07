@@ -4,7 +4,7 @@ import "./Players.css";
 
 class Players extends Component {
   renderName = (name) => {   
-    const disconnected = this.props.players[name].status === "disconnected";
+    const disconnected = this.props.players && this.props.players[name].status === "disconnected";
 
     let renderedName = name;
     let className = "Players-Name" + (disconnected ? " disconnected" : "");
