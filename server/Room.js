@@ -213,15 +213,6 @@ class Room {
     }
   }
 
-  handleReveal(thing) {
-    if (thing === "clues") {
-      for (const name in this.clues) this.clues[name].visible = true;
-      this.sendClues(); 
-    } else if (thing === "word") {
-      this.toActive("word", this.word);
-    }
-  }
-
   startPhase(phase) {
     if (phase !== "clue" && this.phase === phase) return;
     this.phase = phase;

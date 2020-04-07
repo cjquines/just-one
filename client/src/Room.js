@@ -9,6 +9,8 @@ import Players from "./Players.js";
 import Status from "./Status.js";
 import Subaction from "./Subaction.js";
 
+import "./Room.css";
+
 class Room extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +22,7 @@ class Room extends Component {
   }
 
   componentDidMount() {
-    const socket = socketIOClient(window.location.hostname + ":" + window.location.port);
+    const socket = socketIOClient(window.location.hostname + ":" + 4001);
     this.socket = socket;
     this.joinRoom(this.props.roomName);
 
@@ -109,7 +111,6 @@ class Room extends Component {
   submitClue = clue => this.socket.emit("clue", clue);
   submitGuess = guess => this.socket.emit("guess", guess);
   submitJudge = judgment => this.socket.emit("judge", judgment);
-  submitReveal = thing => this.socket.emit("reveal", thing);
   toggleClue = name => this.socket.emit("toggle", name);
 
   render() {
@@ -173,7 +174,6 @@ class Room extends Component {
           submitClue={this.submitClue}
           submitGuess={this.submitGuess}
           submitJudge={this.submitJudge}
-          submitReveal={this.submitReveal}
         />
         {roundsJsx}
       </div>
@@ -183,7 +183,7 @@ class Room extends Component {
 
 function Round(props){
   return [
-    <div style={{ paddingTop: "20px" }}>
+    <div className="Round-Status">
       (round {props.round.roundId}, <b>{props.round.activePlayer}</b>) word: <b>{props.round.word ? props.round.word : "???"}</b>
       {
         props.round.guess ?

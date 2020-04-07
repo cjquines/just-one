@@ -64,20 +64,21 @@ class Players extends Component {
       return (<tr key={name}>{name_}</tr>);
     }
 
-    const clue = (<td>{this.renderClue(name)}</td>);
-    let toggleClass = "small"
+    let toggleClass = "Players-Toggle small"
     if (this.props.clues && name in this.props.clues && !this.props.clues[name].visible)
       toggleClass += " Players-ToggledOffToggle";
-    const toggle = (<td className="Players-ToggleCell"><button className={toggleClass} onClick={e => this.props.toggleClue(name)}>toggle</button></td>);
+    const toggle = (<button className={toggleClass} onClick={e => this.props.toggleClue(name)}>toggle</button>);
 
+    let clue = (<td>{this.renderClue(name)}{toggle}</td>);
     if (spectating || phase === "clue" || amActive || !(this.props.clues && name in this.props.clues && this.props.clues[name].clue)) {
-      return (<tr key={name}>{name_}{clue}<td></td></tr>);
+      clue = (<td>{this.renderClue(name)}</td>);
     }
-    return (<tr key={name}>{name_}{clue}{toggle}</tr>);
+    
+    return (<tr key={name}>{name_}{clue}</tr>);
   }
 
   render() {
-    const { amActive, phase, playerOrder } = this.props;
+    const { phase, playerOrder } = this.props;
 
     if (phase === "disconnected") return (<div className="Players-Wrapper"></div>);
     if (!playerOrder) return (<div className="Players-Wrapper">Loading!</div>);

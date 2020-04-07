@@ -58,22 +58,22 @@ class Action extends Component {
       if (amActive) {
         message = <span>you wrote <b>{guess}</b>. waiting for judgment...</span>;
       } else if (spectating) {
-        message = <span>{activePlayer} guessed <b>guess</b>.</span>;
+        message = <span>{activePlayer} guessed <b>{guess}</b>.</span>;
       } else {
-        message = <span>{activePlayer} guessed <b>guess</b>. is it right?</span>;
+        message = <span>{activePlayer} guessed <b>{guess}</b>. is it right?</span>;
         buttons.push(<button key="right" onClick={e => this.props.submitJudge(true)}>yep</button>);
         buttons.push(<button key="wrong" onClick={e => this.props.submitJudge(false)}>nope</button>);
       }
     } else if (phase === "end") {
       if (amActive && !word) {
-        message = judgment ? `your guess, ${guess}, was right!` : `your guess, ${guess}, was wrong :(`;
+        message = <span>your guess, <b>{guess}</b>, was { judgment ? `right!` : ` wrong :(` }</span>;
         if (!judgment) buttons.push(<button key="guessAgain" onClick={e => this.props.handlePhase("guess")}>guess again</button>);
       } else if (amActive && word) {
-        message = <span>your guess, {guess}, was { judgment ? `right!` : ` wrong. the word was ${word}.` }</span>;
+        message = <span>your guess, <b>{guess}</b>, was wrong. the word was <b>{word}</b>.</span>;
       } else if (spectating) {
-        message = <span>{activePlayer}’s guess, {guess}, was { judgment ? `right!` : ` wrong :(` }</span>;
+        message = <span>{activePlayer}’s guess, <b>{guess}</b>, was { judgment ? `right!` : ` wrong :(` }</span>;
       } else {
-        message = <span>{activePlayer}’s guess, {guess}, was { judgment ? `right!` : ` wrong :(` }</span>;
+        message = <span>{activePlayer}’s guess, <b>{guess}</b>, was { judgment ? `right!` : ` wrong :(` }</span>;
       }
     }
     
