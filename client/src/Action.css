@@ -3,6 +3,7 @@
   flex-direction: column;
   height: 5em;
   justify-content: center;
+  margin-bottom: 1em;
 }
 
 .Action-Wrapper div {

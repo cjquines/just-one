@@ -188,7 +188,7 @@ function Round(props){
   return [
     props.phase !== "wait" && (
     <div
-      className="Round-Status"
+      className={"Round-Status" + (props.isCurrRound ? "" : " old")}
       key={props.key_ + "-status"}
     >
       (round {props.round.roundId}, <b>{props.round.activePlayer}</b>)
