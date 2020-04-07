@@ -1,26 +1,26 @@
-# just one
+# just one!
 
-a web app for playing [just one](https://boardgamegeek.com/boardgame/254640/just-one), a cooperative party word game.
+a web app for playing [just one](https://boardgamegeek.com/boardgame/254640/just-one), a cooperative party word game. hosted on https://just1.herokuapp.com/. you can join rooms by going directly to https://just1.herokuapp.com/room/example, for example.
 
-why a web app, when the game works perfectly fine without one? because social distancing? the default wordlist is kinda eh? i want to be able to play the game over voice chat with friends? you figure it out.
+## implementation details
 
-## build
+inspired by [betaveros/castlefall](https://github.com/betaveros/castlefall), the app relies on the players to trust each other. so anyone can kick anyone else, including themselves. joining a room with the same name as an existing player kicks and replaces them, so you can reconnect as yourself if you disconnect.
 
-run `npm install`. then `npm start` slash `nodemon` starts the socket server, and `npm run hotloader` starts the client server.
+server uses express and socket.io; frontend uses react.
 
-`server/beta.json` is a wordlist that should exist; for copyright reasons you should replace with your own wordlist.
+### build
 
-## deploy
+run `npm install`. development runs on two servers, one for the socket, and one for the client. running `npm start` starts the socket server, and running `npm run hotloader` starts the client server.
 
-remember to change `App.js` to have `socketIOClient(window.location.hostname + ":" + window.location.port)` rather than the hardcoded development port `4001`. then run `npm run build` in the client folder.
+you will need a wordlist. the server [Room.js](server/Room.js) assumes you have a wordlist in the same folder named `beta.json`. this wordlist should contain one object with the key `words`, and value an array of a list of strings.
 
-## todo
+when you deploy, remember to change the client [Room.js](client/Room.js) to have `window.location.port` rather than the hardcoded development port `4001`. run `npm run build` in the client folder. deployment only runs on one server, which runs when you do `npm start`.
 
-- add more metadata i guess
+### todo
+
 - allow clue resubmission
 - score?? maybe?? 
 - a log would be nice (a la castlefall?)
 - sanitize names, clues, and guesses
 - "add clues" feature after a round ends?
 - add a timer? or like, a timer that counts up, resetting every phase
-- fix style "let undefined" vs just let
