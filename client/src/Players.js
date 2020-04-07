@@ -65,7 +65,7 @@ class Players extends Component {
     }
 
     const clue = (<td>{this.renderClue(name)}</td>);
-    const toggle = (<td><button className="small" onClick={e => this.props.toggleClue(name)}>toggle</button></td>);
+    const toggle = (<td className="Players-ToggleCell"><button className="small" onClick={e => this.props.toggleClue(name)}>toggle</button></td>);
 
     if (phase === "clue" || amActive) {
       return (<tr key={name}>{name_}{clue}<td></td></tr>);
@@ -79,18 +79,9 @@ class Players extends Component {
     if (phase === "disconnected") return (<div className="Players-Wrapper"></div>);
     if (!playerOrder) return (<div className="Players-Wrapper">Loading!</div>);
 
-    let thead = [(<th key="name">name</th>)];
-    if (phase !== "wait") thead.push(<th key="clue">clue</th>);
-    if (phase !== "wait" && phase !== "clue" && !amActive) {
-      thead.push(<th key="visible" style={{width: "4em"}}>visible?</th>);
-    } else if (phase !== "wait") {
-      thead.push(<th style={{width: "4em"}}></th>);
-    }
-
     return (
       <div className="Players-Wrapper">
         <table className="Players-Table">
-          <thead><tr>{thead}</tr></thead>
           <tbody>{playerOrder.map(name => this.renderPlayer(name))}</tbody>
         </table>
       </div>

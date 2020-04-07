@@ -16,6 +16,10 @@
   padding: 0.5em 0.25em;
 }
 
+.Players-ToggleCell {
+  text-align: right;
+}
+
 .Players-Table tbody tr:nth-child(2n+1) {
   background-color: #edeff0;
 }
