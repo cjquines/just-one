@@ -27,8 +27,10 @@ class Room {
   }
 
   newPlayer(name, socketId) {
+    let oldId = undefined;
     if (name in this.players) {
-      this.io.to(this.players[name].id).emit("phase", "disconnected", null);
+      oldId = this.players[name].id;
+      this.io.to(oldId).emit("phase", "disconnected", null);
     } else {
       this.playerOrder.splice(randRange(0, this.playerOrder.length + 1), 0, name);
       this.clues[name] = { clue: null, visible: true };
@@ -40,11 +42,12 @@ class Room {
     };
     this.sendPlayers();
     this.sendClues();
+
+    return oldId;
   }
 
-  addSpectator(socket) {
-    this.sendState(null, socket);
-    this.spectators.push(socket.id);
+  addSpectator(socketId) {
+    this.spectators.push(socketId);
     this.sendPlayers();
   }
 
@@ -61,23 +64,27 @@ class Room {
   }
 
   kickPlayer(name) {
-    if (name in this.players) {
-      this.io.to(this.players[name].id).emit("phase", "disconnected");
-      if (name === this.activePlayer) this.startPhase("clue");
-      this.playerOrder = this.playerOrder.filter(name_ => name_ !== name);
-      delete this.players[name];
-      this.sendPlayers();
-      return true;
-    } else {
-      return false;
-    }
+    if (!(name in this.players)) return false;
+    
+    this.io.to(this.players[name].id).emit("phase", "disconnected");
+    if (name === this.activePlayer) this.startPhase("clue");
+    this.playerOrder = this.playerOrder.filter(name_ => name_ !== name);
+    delete this.players[name];
+    this.sendPlayers();
+    return true;
   }
 
   closeRoom() {
+    let ids = [];
     for (let name in this.players) {
+      ids.push(this.players[name].id);
       this.kickPlayer(name);
     }
-    this.spectators.map(id => this.io.to(id).emit("phase", "disconnected"));
+    this.spectators.map((id) => {
+      ids.push(id);
+      this.io.to(id).emit("phase", "disconnected")
+    });
+    return ids;
   }
 
   // game

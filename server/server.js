@@ -13,12 +13,16 @@ app.get("*", (req, res) => {
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
-let sockets = {};
+let clients = {};
 let rooms = {};
 
 function kickAndClean(roomName) {
+  if (!rooms[roomName]) return;
   if (rooms[roomName].players === 1) {
-    rooms[roomName].room.closeRoom();
+    const ids = rooms[roomName].room.closeRoom();
+    ids.map((id) => {
+      if (id in clients) clients[id].leave(roomName);
+    });
     delete rooms[roomName];
   } else {
     rooms[roomName].players -= 1;
@@ -26,15 +30,15 @@ function kickAndClean(roomName) {
 }
 
 io.on("connection", (socket) => {
+  clients[socket.id] = socket;
+
   let name = undefined;
   let roomName = undefined;
   let room = undefined;
 
-  socket.on("room", (roomName_) => {
-    if (socket.id in sockets) socket.leave(sockets[socket.id]);
+  socket.on("join", (roomName_) => {
     roomName = roomName_;
     socket.join(roomName);
-    sockets[socket.id] = roomName;
     if (roomName in rooms) {
       room = rooms[roomName].room;
     } else {
@@ -42,22 +46,35 @@ io.on("connection", (socket) => {
       rooms[roomName] = { room: room, players: 0 };
     }
   });
+  socket.on("leave", (roomName_) => {
+    if (roomName_ in rooms && rooms[roomName_].room.kickPlayer(name)) {
+      kickAndClean(roomName_);
+    }
+    socket.leave(roomName_);
+    roomName = undefined;
+  });
 
   socket.on("name", (name_) => {
     name = name_;
-    room.newPlayer(name, socket.id);
+    const oldId = room.newPlayer(name, socket.id);
+    if (oldId in clients) {
+      clients[oldId].leave(roomName);
+      rooms[roomName].players -= 1;
+    }
     room.sendState(name, socket);
     rooms[roomName].players += 1;
+    
   });
-  socket.on("spectator", () => room.addSpectator(socket));
+  socket.on("spectator", () => {
+    room.addSpectator(socket.id);
+    room.sendState(null, socket);
+  });
   socket.on("disconnect", () => {
-    if (socket.id in sockets) {
-      socket.leave(sockets[socket.id]);
-      delete sockets[socket.id];
-    }
-    if (room.disconnectSocket(name, socket.id)) kickAndClean(roomName);
+    if (socket.id in clients) delete clients[socket.id];
+    if (room && room.disconnectSocket(name, socket.id)) kickAndClean(roomName);
   });
-  socket.on("kick", (name_) => {
+  socket.on("kick", (name_, id_) => {
+    if (id_ in clients) clients[id_].leave(roomName);
     if (room.kickPlayer(name_)) kickAndClean(roomName);
   });
 

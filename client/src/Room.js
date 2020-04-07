@@ -20,16 +20,8 @@ class Room extends Component {
   componentDidMount() {
     const socket = socketIOClient(window.location.hostname + ":" + 4001);
     this.socket = socket;
-    socket.emit("room", this.props.roomName);
+    this.joinRoom(this.props.roomName);
 
-    const myName = prompt("Enter your name") || undefined;
-    if (myName) {
-      this.setState({ myName });
-      socket.emit("name", myName);
-    } else {
-      this.setState({ spectating: true });
-      socket.emit("spectator");
-    }
     socket.on("players", (players, playerOrder, spectators) => this.setState({ players, playerOrder, spectators }));
     socket.on("phase", (phase, activePlayer) => this.setState({ phase, activePlayer }));
     socket.on("word", word => this.setState({ word }));
@@ -39,20 +31,32 @@ class Room extends Component {
     socket.on("judgment", judgment => this.setState({ judgment }));
   }
 
-  changeRoom = () => {
-    const { myName } = this.state;
+  joinRoom = (roomName) => {
     const socket = this.socket;
+    socket.emit("join", roomName);
+    const myName = prompt("Enter your name") || undefined;
+    if (myName) {
+      this.setState({ myName, spectating: false });
+      socket.emit("name", myName);
+    } else {
+      this.setState({ spectating: true });
+      socket.emit("spectator");
+    }
+    this.setState({ roomName });
+  }
 
+  changeRoom = () => {
     const roomName = prompt("Enter new room") || undefined;
     if (roomName) {
-      socket.emit("kick", myName);
+      if (this.state.phase !== "disconnected") {
+        this.socket.emit("leave", this.state.roomName);
+      }
       navigate(`/room/${roomName}`);
-      socket.emit("room", roomName);
-      socket.emit("name", myName);
+      this.joinRoom(roomName);
     }
   }
 
-  handleKick = name => this.socket.emit("kick", name);
+  handleKick = name => this.socket.emit("kick", name, this.state.players[name].id);
   handlePhase = phase => this.socket.emit("phase", phase);
   submitClue = clue => this.socket.emit("clue", clue);
   submitGuess = guess => this.socket.emit("guess", guess);
