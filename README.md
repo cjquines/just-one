@@ -1,6 +1,12 @@
 # just one!
 
-a web app for playing [just one](https://boardgamegeek.com/boardgame/254640/just-one), a cooperative party word game. hosted on https://just1.herokuapp.com/. you can join rooms by going directly to https://just1.herokuapp.com/room/example, for example.
+a web app for playing [just one](https://boardgamegeek.com/boardgame/254640/just-one), a cooperative party word game. hosted on https://just1.herokuapp.com/.
+
+![](sample.png)
+
+in each round, the guesser is trying to guess a word. everyone ot
+
+you can join rooms by going directly to https://just1.herokuapp.com/room/example, for example.
 
 ## implementation details
 
@@ -18,7 +24,6 @@ when you deploy, remember to change the client [Room.js](client/Room.js) to have
 
 ### todo
 
-- score? maybe?
 - sanitize names, clues, and guesses?
 - "add clues" feature after a round ends?
 - add a timer? or like, a timer that counts up, resetting every phase?
