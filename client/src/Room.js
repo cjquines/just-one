@@ -183,7 +183,7 @@ class Room extends Component {
 
 function Round(props){
   return [
-    <div className="Round-Status">
+    props.phase !== "wait" && (<div className="Round-Status">
       (round {props.round.roundId}, <b>{props.round.activePlayer}</b>) word: <b>{props.round.word ? props.round.word : "???"}</b>
       {
         props.round.guess ?
@@ -199,7 +199,7 @@ function Round(props){
         ) :
         ""
       }
-    </div>,
+    </div>),
     <Players
       phase={props.isCurrRound ? props.phase : "end"}
       amActive={props.isCurrRound ? (props.myName === props.round.activePlayer) : false}

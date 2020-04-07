@@ -24,3 +24,10 @@ when you deploy, remember to change the client [Room.js](client/Room.js) to have
 - sanitize names, clues, and guesses
 - "add clues" feature after a round ends?
 - add a timer? or like, a timer that counts up, resetting every phase
+
+- style disconnected -> offline to be gray
+- style (round 0, etc.) to be gray except for words, remove bolding
+- more whitespace underneath action
+- is round number really necessary? i guess so, maybe
+- count corrects and wrongs
+- allow blank clues
