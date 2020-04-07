@@ -3,10 +3,24 @@
 }
 
 .Round-Status {
+  color: #888;
   margin-top: 1em;
   padding: 0.5em;
 }
 
+.Round-Status b {
+  color: initial;
+  font-weight: normal;
+}
+
 .Round-Status.old {
   margin-top: 2em;
+}
+
+.correct {
+  color: #388e3c;
+}
+
+.wrong {
+  color: #d32f2f;
 }

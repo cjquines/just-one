@@ -1,4 +1,4 @@
-@import url('//fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 
 @media all and (min-width:760px) {body {font-size: 23px}}
 @media all and (max-width:760px) {body {font-size: 22px}}
@@ -60,9 +60,9 @@ button.gray:hover {
 }
 
 input {
-  background: #edeff0;
+  background: #f0f0f0;
   border: none;
-  border-bottom: 2px solid #edeff0;
+  border-bottom: 2px solid #f0f0f0;
   border-radius: 0;
   box-sizing: border-box;
   font: inherit;

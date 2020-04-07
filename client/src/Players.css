@@ -16,7 +16,7 @@
 }
 
 .Players-Table tbody tr:nth-child(2n+1) {
-  background-color: #edeff0;
+  background-color: #f0f0f0;
 }
 
 .Players-Table tr td:last-child {
@@ -40,5 +40,5 @@
 }
 
 .guessing, .hidden, .notSubmitted {
-  color: #ccc;
+  color: #aaa;
 }
