@@ -79,7 +79,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("phase", phase => room.startPhase(phase));
-  socket.on("clue", clue => room.handleClue(name, clue));
+  socket.on("clue", clue => {
+    socket.emit("myClue", clue);
+    room.handleClue(name, clue);
+  });
   socket.on("toggle", name_ => room.toggleClue(name_));
   socket.on("guess", guess => room.handleGuess(guess));
   socket.on("judge", judgement => room.handleJudge(judgement));

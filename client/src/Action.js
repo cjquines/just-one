@@ -6,7 +6,6 @@ class Action extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      input: "",
       value: "",
     };
   }
@@ -15,12 +14,13 @@ class Action extends Component {
 
   handleChange = (e) => { this.setState({value: e.target.value}); }
 
-  submit = () => {
+  submit = (e) => {
+    e.preventDefault();
     const { phase } = this.props;
     const { value } = this.state;
     if (phase === "clue") this.props.submitClue(value);
     else if (phase === "guess") this.props.submitGuess(value);
-    this.setState({input: value, value: ""});
+    this.setState({value: ""});
   }
 
   render() {
@@ -35,8 +35,8 @@ class Action extends Component {
     } else if (phase === "clue") {
       if (amActive || spectating) {
         message = "waiting for clues...";
-      } else if (this.state.input || myClue) {
-        message = `you wrote ${this.state.input || myClue}. waiting for others...`;
+      } else if (myClue) {
+        message = `you wrote ${myClue}. waiting for others...`;
         buttons.push(<button key="next" onClick={e => this.props.handlePhase("eliminate")}>compare clues</button>);
       } else {
         message = "write a clue!";
@@ -63,8 +63,8 @@ class Action extends Component {
         message = `${activePlayer} guessed ${guess}.`
       } else {
         message = `${activePlayer} guessed ${guess}. is it right?`;
-        buttons.push(<button key="wrong" onClick={e => this.props.submitJudge(false)}>nope</button>);
         buttons.push(<button key="right" onClick={e => this.props.submitJudge(true)}>yep</button>);
+        buttons.push(<button key="wrong" onClick={e => this.props.submitJudge(false)}>nope</button>);
       }
     } else if (phase === "end") {
       if (amActive && !word) {
@@ -78,7 +78,7 @@ class Action extends Component {
       } else {
         message = judgment ? `${activePlayer}’s guess ${guess} was right!` : `${activePlayer}’s guess ${guess} was wrong :(`;
         buttons.push(<button key="revealClues" onClick={e => this.props.submitReveal("clues")}>reveal clues</button>);
-        buttons.push(<button key="revealWord" onClick={e => this.props.submitReveal("word")}>reveal word</button>);
+        if (!judgment) buttons.push(<button key="revealWord" onClick={e => this.props.submitReveal("word")}>reveal word</button>);
       }
     }
     
