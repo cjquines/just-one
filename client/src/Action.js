@@ -34,7 +34,7 @@ class Action extends Component {
       if (amActive || spectating) {
         message = "waiting for clues...";
       } else if (myClue) {
-        message = `you wrote ${myClue}. waiting for others...`;
+        message = <span>you wrote <b>{myClue}</b>. waiting for others...</span>;
         buttons.push(<button key="next" onClick={e => this.props.handlePhase("eliminate")}>compare clues</button>);
       } else {
         message = "write a clue!";
@@ -56,25 +56,25 @@ class Action extends Component {
       }
     } else if (phase === "judge") {
       if (amActive) {
-        message = `you wrote ${guess}. waiting for judgment...`;
+        message = <span>you wrote <b>{guess}</b>. waiting for judgment...</span>;
       } else if (spectating) {
-        message = `${activePlayer} guessed ${guess}.`
+        message = <span>{activePlayer} guessed <b>guess</b>.</span>;
       } else {
-        message = `${activePlayer} guessed ${guess}. is it right?`;
+        message = <span>{activePlayer} guessed <b>guess</b>. is it right?</span>;
         buttons.push(<button key="right" onClick={e => this.props.submitJudge(true)}>yep</button>);
         buttons.push(<button key="wrong" onClick={e => this.props.submitJudge(false)}>nope</button>);
       }
     } else if (phase === "end") {
       if (amActive && !word) {
-        message = judgment ? `your guess, ${guess}, was right!` : `your guess, ${guess}, was wrong :(`;
+        message = <span>your guess, {guess}, was { judgment ? `right!` : ` wrong :(` }</span>;
         buttons.push(<button key="guessAgain" onClick={e => this.props.handlePhase("guess")}>guess again</button>);
       } else if (amActive && word) {
-        message = judgment ? `your guess, ${guess}, was right!` : `your guess, ${guess}, was wrong. the word was ${word}.`;
+        message = <span>your guess, {guess}, was { judgment ? `right!` : ` wrong. the word was ${word}.` }</span>;
         buttons.push(<button key="revealClues" onClick={e => this.props.submitReveal("clues")}>reveal clues</button>);
       } else if (spectating) {
-        message = judgment ? `${activePlayer}’s guess, ${guess}, was right!` : `${activePlayer}’s guess, ${guess}, was wrong :(`;
+        message = <span>{activePlayer}’s guess, {guess}, was { judgment ? `right!` : ` wrong :(` }</span>;
       } else {
-        message = judgment ? `${activePlayer}’s guess, ${guess}, was right!` : `${activePlayer}’s guess, ${guess}, was wrong :(`;
+        message = <span>{activePlayer}’s guess, {guess}, was { judgment ? `right!` : ` wrong :(` }</span>;
         buttons.push(<button key="revealClues" onClick={e => this.props.submitReveal("clues")}>reveal clues</button>);
         if (!judgment) buttons.push(<button key="revealWord" onClick={e => this.props.submitReveal("word")}>reveal word</button>);
       }
