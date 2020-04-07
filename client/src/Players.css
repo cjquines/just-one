@@ -24,6 +24,14 @@
   background-color: #edeff0;
 }
 
+.Players-ToggledOffToggle {
+  background-color: #888;
+}
+
+.Players-ToggledOffToggle:hover {
+  background-color: #999;
+}
+
 .toggledOff {
   text-decoration: line-through;
 }
