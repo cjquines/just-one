@@ -15,6 +15,9 @@ class Room {
     this.roomName = roomName;
     
     this.roundId = 0;
+    this.correct = 0;
+    this.wrong = 0;
+
     this.activePlayer = undefined;
     this.clues = {}; // player -> {clue, visible}
     this.guess = undefined;
@@ -160,9 +163,14 @@ class Room {
     this.io.to(this.roomName).emit("phase", this.phase, this.roundId, this.activePlayer);
   }
 
+  sendScore() {
+    this.io.to(this.roomName).emit("score", this.correct, this.wrong);
+  }
+
   sendState(name, socket) {
     const { phase } = this;
     socket.emit("phase", phase, this.roundId, this.activePlayer);
+    socket.emit("score", this.correct, this.wrong);
     if (phase === "wait") return;
     let clues = this.clues;
     if (phase === "clue") {
@@ -214,7 +222,9 @@ class Room {
   handleJudge(judgment) {
     if (this.phase === "judge") {
       this.judgment = judgment;
+      judgment ? this.correct += 1 : this.wrong += 1;
       this.sendJudgment();
+      this.sendScore();
       this.startPhase("end");
     }
   }

@@ -4,7 +4,7 @@ import "./Subaction.css";
 
 class Subaction extends Component {
   render() {
-    const { phase, spectating, spectators } = this.props;
+    const { correct, phase, spectating, spectators, wrong } = this.props;
     const showSkip = !spectating && (phase !== "wait");
 
     if (phase === "disconnected") {
@@ -19,7 +19,12 @@ class Subaction extends Component {
 
     return (
       <div className="Subaction-Wrapper">
-        {(<span className="Subaction-Spectators">{spect}</span>)}
+        {(phase !== "wait") && (
+          <span className="Subaction-Score">
+            <span className="correct">{correct} correct</span> · <span className="wrong">{wrong} wrong</span>
+          </span>
+        )}
+        <span className="Subaction-Spectators">{spect}</span>
         {showSkip && <button onClick={e => this.props.handlePhase("clue")}>next round</button>}
       </div>
     );

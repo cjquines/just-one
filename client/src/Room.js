@@ -37,6 +37,7 @@ class Room extends Component {
     }
 
     socket.on("players", (players, playerOrder, spectators) => this.setState({ players, playerOrder, spectators }));
+    socket.on("score", (correct, wrong) => this.setState({ correct, wrong }));
     socket.on("phase", (phase, roundId, activePlayer) => {
       if (phase === "disconnected") {
         this.setState(state => update(state, {
@@ -149,11 +150,13 @@ class Room extends Component {
       />);
       if (i === 0) {
         roundsJsx.push(<Subaction
+          correct={this.state.correct}
           handlePhase={this.handlePhase}
           key={-1}
           phase={this.state.phase}
           spectating={this.state.spectating}
           spectators={this.state.spectators}
+          wrong={this.state.wrong}
         />);
       }
     }
