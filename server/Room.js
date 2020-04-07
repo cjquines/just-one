@@ -4,6 +4,11 @@ function randRange(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function equivalent(s1, s2) {
+  if (!s1 || !s2) return false;
+  return s1.trim().toLowerCase() === s2.trim().toLowerCase();
+}
+
 class Room {
   constructor(io, roomName) {
     this.io = io;
@@ -195,6 +200,7 @@ class Room {
       this.guess = guess;
       this.sendGuess();
       this.startPhase("judge");
+      if (equivalent(guess, this.word)) this.handleJudge(true);
     }
   }
 
