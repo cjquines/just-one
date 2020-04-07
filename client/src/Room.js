@@ -202,10 +202,10 @@ function Round(props){
       className={"Round-Status" + (props.isCurrRound ? "" : " old")}
       key={props.key_ + "-status"}
     >
-      round {props.round.roundId}: <b>{props.round.activePlayer}</b>. word: <b>{props.round.word ? props.round.word : "?"}</b>
+      round {props.round.roundId}: <b>{props.round.activePlayer}</b> · word: <b>{props.round.word ? props.round.word : "?"}</b>
       {
         props.round.guess ?
-        <span>, guess: <b>{props.round.guess}</b></span> :
+        <span> · guess: <b>{props.round.guess}</b></span> :
         ""
       }
       {
