@@ -75,6 +75,7 @@ class Room {
     this.io.to(this.players[name].id).emit("phase", "disconnected");
     if (name === this.activePlayer) this.startPhase("clue");
     this.playerOrder = this.playerOrder.filter(name_ => name_ !== name);
+    this.handleClue();
     delete this.players[name];
     this.sendPlayers();
     return true;
@@ -185,9 +186,13 @@ class Room {
   }
 
   handleClue(name, clue) {
-    if (this.phase === "clue") {
-      this.clues[name].clue = clue;
-      this.sendClues();
+    if (this.phase !== "clue") return;
+    if (name in this.clues) this.clues[name].clue = clue;
+    this.sendClues();
+    if (this.playerOrder.filter((name_) => {
+      return (name_ !== this.activePlayer) && !this.clues[name_].clue;
+    }).length === 0) {
+      this.startPhase("eliminate");
     }
   }
 

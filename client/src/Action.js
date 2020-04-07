@@ -16,7 +16,7 @@ class Action extends Component {
     e.preventDefault();
     const { phase } = this.props;
     const { value } = this.state;
-    if (phase === "clue") this.props.submitClue(value);
+    if (phase === "clue") this.props.submitClue(value || " ");
     else if (phase === "guess") this.props.submitGuess(value);
     this.setState({value: ""});
   }
@@ -33,9 +33,8 @@ class Action extends Component {
     } else if (phase === "clue") {
       if (amActive || spectating) {
         message = "waiting for clues...";
-      } else if (myClue !== null) {
+      } else if (myClue) {
         message = <span>you wrote <b>{myClue}</b>. waiting for others...</span>;
-        buttons.push(<button key="next" onClick={e => this.props.handlePhase("eliminate")}>compare clues</button>);
       } else {
         message = "write a clue!";
         showInput = true;

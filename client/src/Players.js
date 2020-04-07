@@ -29,6 +29,7 @@ class Players extends Component {
       visible = this.props.clues[name].visible;
     }
 
+    if (clue === " ") clue = "";
     let renderedClue = "";
     let className = "Players-Clue";
 
