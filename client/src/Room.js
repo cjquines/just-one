@@ -18,7 +18,7 @@ class Room extends Component {
   }
 
   componentDidMount() {
-    const socket = socketIOClient(window.location.hostname + ":" + 4001);
+    const socket = socketIOClient(window.location.hostname + ":" + window.location.port);
     this.socket = socket;
     this.joinRoom(this.props.roomName);
 
@@ -35,8 +35,9 @@ class Room extends Component {
     const socket = this.socket;
     socket.emit("join", roomName);
 
-    let myName = this.props.location.state.name;
-    if (myName) {
+    let myName = undefined;
+    if (this.props.location && this.props.location.state && this.props.location.state.name) {
+      myName = this.props.location.state.name;
       this.props.location.state.name = undefined;
     } else {
       myName = prompt("enter your name") || undefined;
