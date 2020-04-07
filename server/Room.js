@@ -5,8 +5,9 @@ function randRange(min, max) {
 }
 
 class Room {
-  constructor(io) {
+  constructor(io, roomName) {
     this.io = io;
+    this.roomName = roomName;
     
     this.activePlayer = undefined;
     this.clues = {}; // player -> {clue, visible}
@@ -22,7 +23,7 @@ class Room {
   // players
 
   sendPlayers() {
-    this.io.emit("players", this.players, this.playerOrder, this.spectators);
+    this.io.to(this.roomName).emit("players", this.players, this.playerOrder, this.spectators);
   }
 
   newPlayer(name, socketId) {
@@ -47,20 +48,36 @@ class Room {
     this.sendPlayers();
   }
 
-  disconnectPlayer(name, socketId) {
+  disconnectSocket(name, socketId) {
     if (name in this.players && this.players[name].id === socketId) {
       this.players[name].status = "disconnected";
+      this.sendPlayers();
+      return true;
+    } else {
+      this.spectators = this.spectators.filter(id => id !== socketId);
+      this.sendPlayers();
+      return false;
     }
-    this.spectators = this.spectators.filter(id => id !== socketId);
-    this.sendPlayers();
   }
 
   kickPlayer(name) {
-    this.io.to(this.players[name].id).emit("phase", "disconnected", null);
-    if (name === this.activePlayer) this.startPhase("clue");
-    this.playerOrder = this.playerOrder.filter(name_ => name_ !== name);
-    delete this.players[name];
-    this.sendPlayers();
+    if (name in this.players) {
+      this.io.to(this.players[name].id).emit("phase", "disconnected");
+      if (name === this.activePlayer) this.startPhase("clue");
+      this.playerOrder = this.playerOrder.filter(name_ => name_ !== name);
+      delete this.players[name];
+      this.sendPlayers();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  closeRoom() {
+    for (let name in this.players) {
+      this.kickPlayer(name);
+    }
+    this.spectators.map(id => this.io.to(id).emit("phase", "disconnected"));
   }
 
   // game
@@ -101,7 +118,7 @@ class Room {
   sendClues() {
     const { phase } = this;
     if (phase === "clue") {
-      this.io.emit("clues", this.blindClues());
+      this.io.to(this.roomName).emit("clues", this.blindClues());
     } else if (phase === "eliminate") {
       this.toActive("clues", this.blindClues());
       this.toInactive("clues", this.clues);
@@ -117,15 +134,15 @@ class Room {
   }
 
   sendGuess() {
-    this.io.emit("guess", this.guess);
+    this.io.to(this.roomName).emit("guess", this.guess);
   }
 
   sendJudgment() {
-    this.io.emit("judgment", this.judgment);
+    this.io.to(this.roomName).emit("judgment", this.judgment);
   }
 
   sendPhase() {
-    this.io.emit("phase", this.phase, this.activePlayer);
+    this.io.to(this.roomName).emit("phase", this.phase, this.activePlayer);
   }
 
   sendState(name, socket) {
