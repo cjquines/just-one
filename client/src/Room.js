@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { navigate } from "@reach/router";
 import socketIOClient from "socket.io-client";
+import update from "immutability-helper";
 
 import Action from "./Action.js";
 import NavBar from "./NavBar.js";
@@ -8,27 +9,69 @@ import Players from "./Players.js";
 import Status from "./Status.js";
 import Subaction from "./Subaction.js";
 
+import "./Room.css";
+
 class Room extends Component {
   constructor(props) {
     super(props);
     this.state = {
       phase: "wait",
       spectating: false,
+      rounds: [], // going from latest round to earliest
     };
   }
 
   componentDidMount() {
-    const socket = socketIOClient(window.location.hostname + ":" + window.location.port);
+    const socket = socketIOClient(window.location.hostname + ":" + 4001);
     this.socket = socket;
     this.joinRoom(this.props.roomName);
 
+    const setCurrRoundState = (updater) => {
+      this.setState(state => {
+        if (state.rounds.length === 0)
+          return state;
+        return update(state, {
+          rounds: { 0: updater }
+        });
+      });
+    }
+
     socket.on("players", (players, playerOrder, spectators) => this.setState({ players, playerOrder, spectators }));
-    socket.on("phase", (phase, activePlayer) => this.setState({ phase, activePlayer }));
-    socket.on("word", word => this.setState({ word }));
-    socket.on("myClue", myClue => this.setState({ myClue }));
-    socket.on("clues", clues => this.setState({ clues }));
-    socket.on("guess", guess => this.setState({ guess }));
-    socket.on("judgment", judgment => this.setState({ judgment }));
+    socket.on("phase", (phase, roundId, activePlayer) => {
+      const round = this.getCurrRound();
+      if (round === undefined || round.roundId !== roundId) {
+        // make new round
+        this.setState(state => update(state, {
+          phase: { $set: phase },
+          rounds: {
+            $splice: [[0, 0, {
+              roundId,
+              activePlayer
+            }]]
+          }
+        }));
+        return;
+      }
+      this.setState(state => update(state, {
+        phase: { $set: phase },
+        rounds: {
+          0: {
+            activePlayer: { $set: activePlayer }
+          }
+        }
+      }));
+    });
+    socket.on("word", word => setCurrRoundState({ word: { $set: word } }));
+    socket.on("myClue", myClue => setCurrRoundState({ myClue: { $set: myClue } }));
+    socket.on("clues", clues => setCurrRoundState({ clues: { $set: clues } }));
+    socket.on("guess", guess => setCurrRoundState({ guess: { $set: guess } }));
+    socket.on("judgment", judgment => setCurrRoundState({ judgment: { $set: judgment } }));
+  }
+
+  getCurrRound = () => {
+    if (this.state.rounds.length === 0)
+      return undefined;
+    return this.state.rounds[0];
   }
 
   joinRoom = (roomName) => {
@@ -68,11 +111,41 @@ class Room extends Component {
   submitClue = clue => this.socket.emit("clue", clue);
   submitGuess = guess => this.socket.emit("guess", guess);
   submitJudge = judgment => this.socket.emit("judge", judgment);
-  submitReveal = thing => this.socket.emit("reveal", thing);
   toggleClue = name => this.socket.emit("toggle", name);
 
   render() {
-    const amActive = this.state.myName === this.state.activePlayer;
+    const round = this.getCurrRound();
+    const activePlayer = round ? round.activePlayer : undefined;
+    const word = round ? round.word : undefined;
+    const guess = round ? round.guess : undefined;
+    const judgment = round ? round.judgment : undefined;
+    const myClue = round ? round.myClue : undefined;
+
+    const amActive = this.state.myName === activePlayer;
+
+    let roundsJsx = [];
+    for (const [i, round] of this.state.rounds.entries()) {
+      roundsJsx.push(<Round
+        key={i}
+        players={this.state.players}
+        playerOrder={this.state.playerOrder}
+        spectating={this.state.spectating}
+        handleKick={this.handleKick}
+        toggleClue={this.toggleClue}
+        myName={this.state.myName}
+        phase={this.state.phase}
+        isCurrRound={i === 0}
+        round={round}
+      />);
+      if (i === 0) {
+        roundsJsx.push(<Subaction
+          handlePhase={this.handlePhase}
+          phase={this.state.phase}
+          spectating={this.state.spectating}
+          spectators={this.state.spectators}
+        />);
+      }
+    }
 
     return (
       <div className="Room-Wrapper">
@@ -82,46 +155,63 @@ class Room extends Component {
           roomName={this.props.roomName}
         />
         <Status
-          activePlayer={this.state.activePlayer}
-          amActive={amActive}
           phase={this.state.phase}
-          word={this.state.word}
+          word={word}
+          guess={guess}
+          activePlayer={activePlayer}
+          amActive={amActive}
         />
         <Action
-          activePlayer={this.state.activePlayer}
-          amActive={amActive}
-          guess={this.state.guess}
-          handlePhase={this.handlePhase}
-          judgment={this.state.judgment}
-          myClue={this.state.myClue}
           phase={this.state.phase}
+          word={word}
+          guess={guess}
+          activePlayer={activePlayer}
+          myClue={myClue}
+          judgment={judgment}
+          amActive={amActive}
+          handlePhase={this.handlePhase}
           spectating={this.state.spectating}
           submitClue={this.submitClue}
           submitGuess={this.submitGuess}
           submitJudge={this.submitJudge}
-          submitReveal={this.submitReveal}
-          word={this.state.word}
         />
-        <Players
-          activePlayer={this.state.activePlayer}
-          amActive={amActive}
-          clues={this.state.clues}
-          handleKick={this.handleKick}
-          toggleClue={this.toggleClue}
-          phase={this.state.phase}
-          playerOrder={this.state.playerOrder}
-          players={this.state.players}
-          spectating={this.state.spectating}
-        />
-        <Subaction
-          handlePhase={this.handlePhase}
-          phase={this.state.phase}
-          spectating={this.state.spectating}
-          spectators={this.state.spectators}
-        />
+        {roundsJsx}
       </div>
     );
   }
 }
+
+function Round(props){
+  return [
+    props.phase !== "wait" && (<div className="Round-Status">
+      (round {props.round.roundId}, <b>{props.round.activePlayer}</b>) word: <b>{props.round.word ? props.round.word : "???"}</b>
+      {
+        props.round.guess ?
+        <span>, guess: <b>{props.round.guess}</b></span> :
+        ""
+      }
+      {
+        (props.round.judgment !== undefined) ?
+        (
+          props.round.judgment ?
+          <span style={{ color: "green" }}> (correct)</span>:
+          <span style={{ color: "red" }}> (wrong)</span>
+        ) :
+        ""
+      }
+    </div>),
+    <Players
+      phase={props.isCurrRound ? props.phase : "end"}
+      amActive={props.isCurrRound ? (props.myName === props.round.activePlayer) : false}
+      clues={props.round.clues}
+      activePlayer={props.round.activePlayer}
+      players={props.players}
+      playerOrder={props.playerOrder}
+      spectating={props.isCurrRound ? props.spectating : true}
+      handleKick={props.handleKick}
+      toggleClue={props.toggleClue}
+    />
+  ];
+};
 
 export default Room;

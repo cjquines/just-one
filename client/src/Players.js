@@ -42,10 +42,10 @@ class Players extends Component {
 
     if (active) {
       className += " guessing";
-      renderedClue = "guessing";
+      renderedClue = "guesser";
     }
 
-    if (!visible) className += " hidden";
+    if (!visible) className += amActive ? " hidden" : " toggledOff";
     if (renderedClue === "no clue") className += " notSubmitted";
 
     return (<span className={className}>{renderedClue}</span>);
@@ -64,33 +64,28 @@ class Players extends Component {
       return (<tr key={name}>{name_}</tr>);
     }
 
-    const clue = (<td>{this.renderClue(name)}</td>);
-    const toggle = (<td><button className="small" onClick={e => this.props.toggleClue(name)}>toggle</button></td>);
+    let toggleClass = "Players-Toggle small"
+    if (this.props.clues && name in this.props.clues && !this.props.clues[name].visible)
+      toggleClass += " Players-ToggledOffToggle";
+    const toggle = (<button className={toggleClass} onClick={e => this.props.toggleClue(name)}>toggle</button>);
 
-    if (phase === "clue" || amActive) {
-      return (<tr key={name}>{name_}{clue}<td></td></tr>);
+    let clue = (<td>{this.renderClue(name)}{toggle}</td>);
+    if (spectating || phase === "clue" || amActive || !(this.props.clues && name in this.props.clues && this.props.clues[name].clue)) {
+      clue = (<td>{this.renderClue(name)}</td>);
     }
-    return (<tr key={name}>{name_}{clue}{toggle}</tr>);
+    
+    return (<tr key={name}>{name_}{clue}</tr>);
   }
 
   render() {
-    const { amActive, phase, playerOrder } = this.props;
+    const { phase, playerOrder } = this.props;
 
     if (phase === "disconnected") return (<div className="Players-Wrapper"></div>);
     if (!playerOrder) return (<div className="Players-Wrapper">Loading!</div>);
 
-    let thead = [(<th key="name">name</th>)];
-    if (phase !== "wait") thead.push(<th key="clue">clue</th>);
-    if (phase !== "wait" && phase !== "clue" && !amActive) {
-      thead.push(<th key="visible" style={{width: "4em"}}>visible?</th>);
-    } else if (phase !== "wait") {
-      thead.push(<th style={{width: "4em"}}></th>);
-    }
-
     return (
       <div className="Players-Wrapper">
         <table className="Players-Table">
-          <thead><tr>{thead}</tr></thead>
           <tbody>{playerOrder.map(name => this.renderPlayer(name))}</tbody>
         </table>
       </div>
