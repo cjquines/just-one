@@ -38,6 +38,13 @@ class Room extends Component {
 
     socket.on("players", (players, playerOrder, spectators) => this.setState({ players, playerOrder, spectators }));
     socket.on("phase", (phase, roundId, activePlayer) => {
+      if (phase === "disconnected") {
+        this.setState(state => update(state, {
+          phase: { $set: phase },
+          rounds: { $set: [] },
+        }));
+        return;
+      }
       const round = this.getCurrRound();
       if (round === undefined || round.roundId !== roundId) {
         // make new round
@@ -101,8 +108,8 @@ class Room extends Component {
     const roomName = prompt("enter new room") || undefined;
     if (roomName) {
       if (this.state.phase !== "disconnected") this.leaveRoom();
-      this.setState({ rounds: [] });
       navigate(`/room/${roomName}`);
+      this.setState(state => update(state, { rounds: { $set: [] } }));
       this.joinRoom(roomName);
     }
   }
