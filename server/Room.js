@@ -97,7 +97,9 @@ class Room {
   // game
 
   toActive(event, data) {
-    this.io.to(this.players[this.activePlayer].id).emit(event, data);
+    if (this.activePlayer in this.players) {
+      this.io.to(this.players[this.activePlayer].id).emit(event, data);
+    }
   }
 
   toInactive(event, data) {
