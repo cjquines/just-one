@@ -101,6 +101,7 @@ class Room extends Component {
     const roomName = prompt("enter new room") || undefined;
     if (roomName) {
       if (this.state.phase !== "disconnected") this.leaveRoom();
+      this.setState({ rounds: [] });
       navigate(`/room/${roomName}`);
       this.joinRoom(roomName);
     }
