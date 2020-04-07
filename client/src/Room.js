@@ -192,7 +192,11 @@ function Round(props){
       }
       {
         (props.round.judgment !== undefined) ?
-        <span> ({props.round.judgment ? "correct" : "wrong"})</span> :
+        (
+          props.round.judgment ?
+          <span style={{ color: "green" }}> (correct)</span>:
+          <span style={{ color: "red" }}> (wrong)</span>
+        ) :
         ""
       }
     </div>,
