@@ -33,7 +33,7 @@ class Action extends Component {
     } else if (phase === "clue") {
       if (amActive || spectating) {
         message = "waiting for clues...";
-      } else if (myClue) {
+      } else if (myClue !== null) {
         message = <span>you wrote <b>{myClue}</b>. waiting for others...</span>;
         buttons.push(<button key="next" onClick={e => this.props.handlePhase("eliminate")}>compare clues</button>);
       } else {

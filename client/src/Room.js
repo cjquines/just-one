@@ -127,7 +127,7 @@ class Room extends Component {
     const word = round ? round.word : undefined;
     const guess = round ? round.guess : undefined;
     const judgment = round ? round.judgment : undefined;
-    const myClue = round ? round.myClue : undefined;
+    const myClue = (round && round.myClue) ? round.myClue : null;
 
     const amActive = this.state.myName === activePlayer;
 
