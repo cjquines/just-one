@@ -10,9 +10,7 @@ class Action extends Component {
     };
   }
 
-  componentDidMount() {}
-
-  handleChange = (e) => { this.setState({value: e.target.value}); }
+  handleChange = e => this.setState({value: e.target.value});
 
   submit = (e) => {
     e.preventDefault();

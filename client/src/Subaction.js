@@ -3,13 +3,6 @@ import React, { Component } from "react";
 import "./Subaction.css";
 
 class Subaction extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {}
-
   render() {
     const { phase, spectating, spectators } = this.props;
     const showSkip = !spectating && (phase !== "wait");

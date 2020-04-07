@@ -3,13 +3,6 @@ import React, { Component } from "react";
 import "./Players.css";
 
 class Players extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {}
-
   renderName = (name) => {   
     let renderedName = name;
     let className = "Players-Name";

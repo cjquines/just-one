@@ -9,8 +9,8 @@ import Status from "./Status.js";
 import Subaction from "./Subaction.js";
 
 class Room extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       phase: "wait",
       spectating: false,
@@ -34,7 +34,13 @@ class Room extends Component {
   joinRoom = (roomName) => {
     const socket = this.socket;
     socket.emit("join", roomName);
-    const myName = prompt("Enter your name") || undefined;
+
+    let myName = this.props.location.state.name;
+    if (myName) {
+      this.props.location.state.name = undefined;
+    } else {
+      myName = prompt("enter your name") || undefined;
+    }
     if (myName) {
       this.setState({ myName, spectating: false });
       socket.emit("name", myName);
@@ -45,12 +51,12 @@ class Room extends Component {
     this.setState({ roomName });
   }
 
+  leaveRoom = () => this.socket.emit("leave", this.state.roomName);
+
   changeRoom = () => {
-    const roomName = prompt("Enter new room") || undefined;
+    const roomName = prompt("enter new room") || undefined;
     if (roomName) {
-      if (this.state.phase !== "disconnected") {
-        this.socket.emit("leave", this.state.roomName);
-      }
+      if (this.state.phase !== "disconnected") this.leaveRoom();
       navigate(`/room/${roomName}`);
       this.joinRoom(roomName);
     }
@@ -71,6 +77,7 @@ class Room extends Component {
       <div className="Room-Wrapper">
         <NavBar
           changeRoom={this.changeRoom}
+          leaveRoom={this.leaveRoom}
           roomName={this.props.roomName}
         />
         <Status
