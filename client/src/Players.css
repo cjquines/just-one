@@ -20,6 +20,10 @@
   background-color: #edeff0;
 }
 
+.toggledOff {
+  text-decoration: line-through;
+}
+
 .guessing, .hidden, .notSubmitted {
   color: #ccc;
 }

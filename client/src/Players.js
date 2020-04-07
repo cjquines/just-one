@@ -45,7 +45,7 @@ class Players extends Component {
       renderedClue = "guessing";
     }
 
-    if (!visible) className += " hidden";
+    if (!visible) className += amActive ? " hidden" : " toggledOff";
     if (renderedClue === "no clue") className += " notSubmitted";
 
     return (<span className={className}>{renderedClue}</span>);
