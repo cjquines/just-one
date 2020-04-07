@@ -126,20 +126,22 @@ class Room extends Component {
     let roundsJsx = [];
     for (const [i, round] of this.state.rounds.entries()) {
       roundsJsx.push(<Round
-        key={i}
-        players={this.state.players}
-        playerOrder={this.state.playerOrder}
-        spectating={this.state.spectating}
         handleKick={this.handleKick}
-        toggleClue={this.toggleClue}
+        isCurrRound={i === 0}
+        key={i}
+        key_={i}
         myName={this.state.myName}
         phase={this.state.phase}
-        isCurrRound={i === 0}
+        playerOrder={this.state.playerOrder}
+        players={this.state.players}
         round={round}
+        spectating={this.state.spectating}
+        toggleClue={this.toggleClue}
       />);
       if (i === 0) {
         roundsJsx.push(<Subaction
           handlePhase={this.handlePhase}
+          key={-1}
           phase={this.state.phase}
           spectating={this.state.spectating}
           spectators={this.state.spectators}
@@ -183,8 +185,13 @@ class Room extends Component {
 
 function Round(props){
   return [
-    props.phase !== "wait" && (<div className="Round-Status">
-      (round {props.round.roundId}, <b>{props.round.activePlayer}</b>) word: <b>{props.round.word ? props.round.word : "???"}</b>
+    props.phase !== "wait" && (
+    <div
+      className="Round-Status"
+      key={props.key_ + "-status"}
+    >
+      (round {props.round.roundId}, <b>{props.round.activePlayer}</b>)
+        word: <b>{props.round.word ? props.round.word : "???"}</b>
       {
         props.round.guess ?
         <span>, guess: <b>{props.round.guess}</b></span> :
@@ -192,23 +199,23 @@ function Round(props){
       }
       {
         (props.round.judgment !== undefined) ?
-        (
-          props.round.judgment ?
-          <span style={{ color: "green" }}> (correct)</span>:
-          <span style={{ color: "red" }}> (wrong)</span>
-        ) :
+        (props.round.judgment ?
+        <span style={{ color: "green" }}> (correct)</span> :
+        <span style={{ color: "red" }}> (wrong)</span>) :
         ""
-      }
-    </div>),
+    }
+    </div>
+    ),
     <Players
-      phase={props.isCurrRound ? props.phase : "end"}
+      activePlayer={props.round.activePlayer}
       amActive={props.isCurrRound ? (props.myName === props.round.activePlayer) : false}
       clues={props.round.clues}
-      activePlayer={props.round.activePlayer}
-      players={props.players}
-      playerOrder={props.playerOrder}
-      spectating={props.isCurrRound ? props.spectating : true}
       handleKick={props.handleKick}
+      key={props.key_}
+      phase={props.isCurrRound ? props.phase : "end"}
+      playerOrder={props.playerOrder}
+      players={props.players}
+      spectating={props.isCurrRound ? props.spectating : true}
       toggleClue={props.toggleClue}
     />
   ];
