@@ -19,9 +19,6 @@ remember to change `App.js` to have `socketIOClient(window.location.hostname + "
 - add more metadata i guess
 - allow clue resubmission
 - score?? maybe?? 
-- make pressing enter submit the clue
-- i think if the answer is (case-insensitively) exactly right you should autoaccept
-- clues that are case-insensitively identical should autohide
 - a log would be nice (a la castlefall?)
 - sanitize names, clues, and guesses
 - "add clues" feature after a round ends?

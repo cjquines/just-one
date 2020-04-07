@@ -74,9 +74,9 @@ class Action extends Component {
         message = judgment ? `your guess, ${guess}, was right!` : `your guess, ${guess}, was wrong. the word was ${word}.`;
         buttons.push(<button key="revealClues" onClick={e => this.props.submitReveal("clues")}>reveal clues</button>);
       } else if (spectating) {
-        message = judgment ? `${activePlayer}’s guess ${guess} was right!` : `${activePlayer}’s guess ${guess} was wrong :(`;
+        message = judgment ? `${activePlayer}’s guess, ${guess}, was right!` : `${activePlayer}’s guess, ${guess}, was wrong :(`;
       } else {
-        message = judgment ? `${activePlayer}’s guess ${guess} was right!` : `${activePlayer}’s guess ${guess} was wrong :(`;
+        message = judgment ? `${activePlayer}’s guess, ${guess}, was right!` : `${activePlayer}’s guess, ${guess}, was wrong :(`;
         buttons.push(<button key="revealClues" onClick={e => this.props.submitReveal("clues")}>reveal clues</button>);
         if (!judgment) buttons.push(<button key="revealWord" onClick={e => this.props.submitReveal("word")}>reveal word</button>);
       }

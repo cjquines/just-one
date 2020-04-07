@@ -236,7 +236,6 @@ class Room {
         this.clues[name] = { clue: null, visible: true };
       });
       this.io.to(this.roomName).emit("myClue", null);
-      this.clues[this.activePlayer].clue = "guessing";
       this.word = words[randRange(0, words.length)];
       this.sendClues();
       this.sendWord();
