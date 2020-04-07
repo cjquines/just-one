@@ -99,6 +99,7 @@ class Room extends Component {
           phase={this.state.phase}
           playerOrder={this.state.playerOrder}
           players={this.state.players}
+          spectating={this.state.spectating}
         />
         <Subaction
           handlePhase={this.handlePhase}

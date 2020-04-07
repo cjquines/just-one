@@ -59,10 +59,10 @@ class Players extends Component {
   }
 
   renderPlayer = (name) => {
-    const { amActive, phase } = this.props;
+    const { amActive, phase, spectating } = this.props;
     const name_ = (
       <td>
-        <button className="small gray" onClick={e => this.props.handleKick(name)}>kick</button>
+        {!spectating && (<button className="small gray" onClick={e => this.props.handleKick(name)}>kick</button>)}
         {this.renderName(name)}
       </td>
     );
