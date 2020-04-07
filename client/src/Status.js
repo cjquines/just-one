@@ -9,11 +9,7 @@ class Status extends Component {
     if (this.props.phase === "disconnected") content = "you are disconnected!";
     else if (this.props.phase === "wait") content = "waiting for players...";
     else if (this.props.amActive) content = "you are guessing!";
-    else {
-      content = [
-        <span>{this.props.activePlayer}’s word is: <b>{this.props.word}</b>.</span>,
-      ];
-    }
+    else content = (<span>{this.props.activePlayer}’s word is: <b>{this.props.word}</b>.</span>);
 
     return (<div className="Status-Wrapper">{content}</div>);
   }

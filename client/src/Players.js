@@ -4,15 +4,17 @@ import "./Players.css";
 
 class Players extends Component {
   renderName = (name) => {   
+    const disconnected = this.props.players[name].status === "disconnected";
+
     let renderedName = name;
-    let className = "Players-Name";
+    let className = "Players-Name" + (disconnected ? " disconnected" : "");
 
-    if (this.props.players[name].status === "disconnected") {
-      renderedName += " (disconnected)";
-      className += " disconnected";
-    }
-
-    return (<span className={className}>{renderedName}</span>);
+    return (
+      <span className={className}>
+        {renderedName}
+        {disconnected ? (<span className="disconnected-marker"> (disconnected)</span>) : ""}
+      </span>
+    );
   }
 
   renderClue = (name) => {

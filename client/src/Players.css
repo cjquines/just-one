@@ -42,3 +42,11 @@
 .guessing, .hidden, .notSubmitted {
   color: #aaa;
 }
+
+.disconnected {
+  color: #888;
+}
+
+.disconnected-marker {
+  font-size: 0.8em;
+}
