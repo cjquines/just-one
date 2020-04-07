@@ -240,7 +240,16 @@ class Room {
       this.word = words[randRange(0, words.length)];
       this.sendClues();
       this.sendWord();
-    } else if (phase === "eliminate" || phase === "guess") {
+    } else if (phase === "eliminate") {
+      this.playerOrder.map(name => {
+        const clue = this.clues[name].clue;
+        if (!clue) return;
+        if (this.playerOrder.filter(name_ => equivalent(clue, this.clues[name_].clue)).length > 1) {
+          this.toggleClue(name);
+        }
+      });
+      this.sendClues();
+    } else if (phase === "guess") {
       this.sendClues();
     }
     this.sendPhase();
