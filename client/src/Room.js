@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { navigate } from "@reach/router";
 import socketIOClient from "socket.io-client";
 
 import Action from "./Action.js";
+import NavBar from "./NavBar.js";
 import Players from "./Players.js";
 import Status from "./Status.js";
 import Subaction from "./Subaction.js";
@@ -37,6 +39,19 @@ class Room extends Component {
     socket.on("judgment", judgment => this.setState({ judgment }));
   }
 
+  changeRoom = () => {
+    const { myName } = this.state;
+    const socket = this.socket;
+
+    const roomName = prompt("Enter new room") || undefined;
+    if (roomName) {
+      socket.emit("kick", myName);
+      navigate(`/room/${roomName}`);
+      socket.emit("room", roomName);
+      socket.emit("name", myName);
+    }
+  }
+
   handleKick = name => this.socket.emit("kick", name);
   handlePhase = phase => this.socket.emit("phase", phase);
   submitClue = clue => this.socket.emit("clue", clue);
@@ -49,7 +64,11 @@ class Room extends Component {
     const amActive = this.state.myName === this.state.activePlayer;
 
     return (
-      <div className="Room-WrRoomer">
+      <div className="Room-Wrapper">
+        <NavBar
+          changeRoom={this.changeRoom}
+          roomName={this.props.roomName}
+        />
         <Status
           activePlayer={this.state.activePlayer}
           amActive={amActive}

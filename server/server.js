@@ -13,6 +13,7 @@ app.get("*", (req, res) => {
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
+let sockets = {};
 let rooms = {};
 
 function kickAndClean(roomName) {
@@ -30,8 +31,10 @@ io.on("connection", (socket) => {
   let room = undefined;
 
   socket.on("room", (roomName_) => {
+    if (socket.id in sockets) socket.leave(sockets[socket.id]);
     roomName = roomName_;
     socket.join(roomName);
+    sockets[socket.id] = roomName;
     if (roomName in rooms) {
       room = rooms[roomName].room;
     } else {
@@ -48,6 +51,10 @@ io.on("connection", (socket) => {
   });
   socket.on("spectator", () => room.addSpectator(socket));
   socket.on("disconnect", () => {
+    if (socket.id in sockets) {
+      socket.leave(sockets[socket.id]);
+      delete sockets[socket.id];
+    }
     if (room.disconnectSocket(name, socket.id)) kickAndClean(roomName);
   });
   socket.on("kick", (name_) => {

@@ -62,7 +62,7 @@ class Players extends Component {
     const { amActive, phase } = this.props;
     const name_ = (
       <td>
-        <button className="Players-Kick" onClick={e => this.props.handleKick(name)}>kick</button>
+        <button className="small gray" onClick={e => this.props.handleKick(name)}>kick</button>
         {this.renderName(name)}
       </td>
     );
@@ -72,7 +72,7 @@ class Players extends Component {
     }
 
     const clue = (<td>{this.renderClue(name)}</td>);
-    const toggle = (<td><button onClick={e => this.props.toggleClue(name)}>toggle</button></td>);
+    const toggle = (<td><button className="small" onClick={e => this.props.toggleClue(name)}>toggle</button></td>);
 
     if (phase === "clue" || amActive) {
       return (<tr key={name}>{name_}{clue}<td></td></tr>);
