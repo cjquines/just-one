@@ -1,17 +1,45 @@
 import React, { Component } from "react";
+import { navigate } from "@reach/router";
+
+import NavBar from "./NavBar.js";
+
+import "./Splash.css";
 
 class Splash extends Component {
-  constructor() {
-    super();
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      room: "",
+    };
   }
 
-  componentDidMount() {}
+  handleChangeName = e => this.setState({name: e.target.value});
+  handleChangeRoom = e => this.setState({room: e.target.value});
+
+  submit = (e) => {
+    e.preventDefault();
+    const { name, room } = this.state;
+    navigate(`/room/${room}`, { state: { name: name } });
+  }
 
   render() {
     return (
       <div className="Splash-Wrapper">
-        just one!
+        <NavBar />
+        <form onSubmit={this.submit}>
+          <input
+            onChange={this.handleChangeRoom}
+            type="text"
+            value={this.state.room}
+          />
+          <input
+            onChange={this.handleChangeName}
+            type="text"
+            value={this.state.name}
+          />
+          <button type="submit">send</button>
+        </form>
       </div>
     );
   }
