@@ -93,12 +93,14 @@ class Action extends Component {
         <div className="Action-Message">{message}</div>
         {showInput && (
           <div className="Action-Input">
-            <input
-              onChange={this.handleChange}
-              type="text"
-              value={this.state.value}
-            />
-            <button onClick={e => this.submit()}>send</button>
+            <form onSubmit={this.submit}>
+              <input
+                onChange={this.handleChange}
+                type="text"
+                value={this.state.value}
+              />
+              <button type="submit">send</button>
+            </form>
           </div>
         )}
         {buttons.length > 0 && (<div className="Action-Buttons">{buttons}</div>)}
