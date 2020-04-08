@@ -30,6 +30,7 @@ button {
   border-radius: 2px;
   border: none;
   color: #fff;
+  cursor: pointer;
   font: inherit;
   height: 2em;
   margin: 0 0.25em;
@@ -37,7 +38,7 @@ button {
   text-align: center;
   text-decoration: none;
   transition: 0.3s background-color;
-  cursor: pointer;
+  vertical-align: middle;
 }
 
 button:hover {
@@ -70,6 +71,7 @@ input {
   margin: 0 0.25em;
   padding: 0.25em;
   transition: 0.3s border-bottom;
+  vertical-align: middle;
   width: 10em;
 }
 
