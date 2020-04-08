@@ -55,8 +55,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("name", (name_) => {
-    if (room == undefined)
-      return;
+    if (room === undefined) return;
     name = name_;
     const oldId = room.newPlayer(name, socket.id);
     if (oldId in clients) {
@@ -68,8 +67,8 @@ io.on("connection", (socket) => {
     
   });
   socket.on("spectator", () => {
-    room.addSpectator(socket.id);
-    room.sendState(null, socket);
+    room && room.addSpectator(socket.id);
+    room && room.sendState(null, socket);
   });
   socket.on("disconnect", () => {
     if (socket.id in clients) delete clients[socket.id];
@@ -77,17 +76,17 @@ io.on("connection", (socket) => {
   });
   socket.on("kick", (name_, id_) => {
     if (id_ in clients) clients[id_].leave(roomName);
-    if (room.kickPlayer(name_)) kickAndClean(roomName);
+    if (room && room.kickPlayer(name_)) kickAndClean(roomName);
   });
 
-  socket.on("phase", phase => room.startPhase(phase));
+  socket.on("phase", phase => room && room.startPhase(phase));
   socket.on("clue", clue => {
     socket.emit("myClue", clue);
-    room.handleClue(name, clue);
+    room && room.handleClue(name, clue);
   });
-  socket.on("toggle", name_ => room.toggleClue(name_));
-  socket.on("guess", guess => room.handleGuess(guess));
-  socket.on("judge", judgement => room.handleJudge(judgement));
+  socket.on("toggle", name_ => room && room.toggleClue(name_));
+  socket.on("guess", guess => room && room.handleGuess(guess));
+  socket.on("judge", judgement => room && room.handleJudge(judgement));
 });
 
 const port = process.env.PORT || 4001;
