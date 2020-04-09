@@ -36,14 +36,14 @@ class Action extends Component {
       } else if (myClue) {
         message = <span>you wrote <b>{myClue}</b>. waiting for others...</span>;
       } else {
-        message = "write a clue!";
+        message = "write a one-word clue!";
         showInput = true;
       }
     } else if (phase === "eliminate") {
       if (amActive || spectating) {
         message = "the group is comparing clues...";
       } else {
-        message = "hide clues that are invalid or identical!";
+        message = "hide clues that are the same or invalid!";
         buttons.push(<button key="next" onClick={e => this.props.handlePhase("guess")}>show clues</button>);
       }
     } else if (phase === "guess") {
@@ -67,8 +67,6 @@ class Action extends Component {
       if (amActive && !word) {
         message = <span>your guess, <b>{guess}</b>, was { judgment ? `right!` : ` wrong :(` }</span>;
         if (!judgment) buttons.push(<button key="guessAgain" onClick={e => this.props.handlePhase("guess")}>guess again</button>);
-      } else if (amActive && word) {
-        message = <span>your guess, <b>{guess}</b>, was wrong. the word was <b>{word}</b>.</span>;
       } else if (spectating) {
         message = <span>{activePlayer}’s guess, <b>{guess}</b>, was { judgment ? `right!` : ` wrong :(` }</span>;
       } else {
