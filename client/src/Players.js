@@ -67,10 +67,13 @@ class Players extends Component {
       return (<tr key={name}>{name_}</tr>);
     }
 
-    let toggleClass = "Players-Toggle small"
-    if (this.props.clues && name in this.props.clues && !this.props.clues[name].visible)
+    let toggleClass = "Players-Toggle small";
+    let toggleWord = "show";
+    if (this.props.clues && name in this.props.clues && !this.props.clues[name].visible) {
       toggleClass += " Players-ToggledOffToggle";
-    const toggle = (<button className={toggleClass} onClick={e => this.props.toggleClue(name)}>toggle</button>);
+      toggleWord = "hide";
+    }
+    const toggle = (<button className={toggleClass} onClick={e => this.props.toggleClue(name)}>{toggleWord}</button>);
 
     let clue = (<td>{this.renderClue(name)}{toggle}</td>);
     if (spectating || phase === "clue" || amActive || !(this.props.clues && name in this.props.clues && this.props.clues[name].clue && this.props.clues[name].clue !== " ")) {
