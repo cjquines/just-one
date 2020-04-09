@@ -68,10 +68,10 @@ class Players extends Component {
     }
 
     let toggleClass = "Players-Toggle small";
-    let toggleWord = "show";
+    let toggleWord = "hide";
     if (this.props.clues && name in this.props.clues && !this.props.clues[name].visible) {
       toggleClass += " Players-ToggledOffToggle";
-      toggleWord = "hide";
+      toggleWord = "show";
     }
     const toggle = (<button className={toggleClass} onClick={e => this.props.toggleClue(name)}>{toggleWord}</button>);
 
