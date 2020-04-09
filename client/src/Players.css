@@ -20,7 +20,7 @@
 }
 
 .Players-Table tr td:last-child {
-  width: 66%;
+  width: 60%;
 }
 
 .Players-Toggle {
@@ -33,6 +33,10 @@
 
 .Players-ToggledOffToggle:hover {
   background-color: #999;
+}
+
+.Players-Name {
+  vertical-align: middle;
 }
 
 .toggledOff {
