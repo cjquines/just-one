@@ -1,0 +1,77 @@
+.Rules-Wrapper {
+  background-color: #fff;
+  border: 4px solid #888;
+  border-radius: 1em;
+  box-sizing: border-box;
+  left: 50%;
+  line-height: 1.5;
+  max-height: calc(100% - 2em);
+  max-width: 38em;
+  overflow-y: scroll;
+  padding: 1em;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 2em);
+}
+
+.Rules-Wrapper p {
+  margin: 0 0 0.25em;
+}
+
+.Rules-Wrapper ol {
+  counter-reset: item;
+  margin: 0;
+  padding: 0;
+}
+
+.Rules-Wrapper ol > li {
+  counter-increment: item;
+  list-style: none inside;
+}
+
+.Rules-Wrapper .Rules-Step-Lead:before {
+  background: #26a69a;
+  border-radius: 50%;
+  color: #fff;
+  content: counter(item);
+  display: inline-block;
+  font-size: 0.8em;
+  margin-right: 0.5em;
+  padding: 0.1em;
+  text-align: center;
+  width: 1.5em;
+  vertical-align: text-bottom;
+}
+
+.Rules-Wrapper .Rules-Step-Lead {
+  margin: 0.65em 0 0.15em;
+}
+
+.Rules-Wrapper .Rules-Step-Explanation {
+  color: #666;
+  margin: 0 0 0.15em 1.75em;
+}
+
+.Rules-Lead, .Rules-Steps {
+  margin-bottom: 1em;
+}
+
+.Rules-Close {
+  margin: 1.5em 0 1em;
+  text-align: center;
+}
+
+.Rules-Close-Top {
+  top: 0;
+  right: 0;
+  position: fixed;
+}
+
+.Rules-Close-Top button {
+  margin: 1em;
+  width: 2em;
+  border-radius: 50%;
+  padding: 0;
+}
+
