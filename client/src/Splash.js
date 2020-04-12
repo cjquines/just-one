@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { navigate } from "@reach/router";
 
 import NavBar from "./NavBar.js";
+import Rules from "./Rules.js";
 
 import "./Splash.css";
 
@@ -11,11 +12,13 @@ class Splash extends Component {
     this.state = {
       name: "",
       room: "",
+      rules: false,
     };
   }
 
   handleChangeName = e => this.setState({name: e.target.value});
   handleChangeRoom = e => this.setState({room: e.target.value});
+  toggleRules = () => this.setState({rules: !this.state.rules});
 
   submit = (e) => {
     e.preventDefault();
@@ -26,7 +29,7 @@ class Splash extends Component {
   render() {
     return (
       <div className="Splash-Wrapper">
-        <NavBar />
+        <NavBar toggleRules={this.toggleRules}/>
         <div className="Splash-Copy">
           <form onSubmit={this.submit}>
             <span>
@@ -51,6 +54,7 @@ class Splash extends Component {
           </form>
           <p>by <a href="https://cjquines.com/">cjquines</a> · <a href="https://github.com/cjquines/just-one/">github</a></p>
         </div>
+        <Rules shown={this.state.rules} toggleRules={this.toggleRules}/>
       </div>
     );
   }

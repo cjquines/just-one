@@ -6,6 +6,7 @@ import update from "immutability-helper";
 import Action from "./Action.js";
 import NavBar from "./NavBar.js";
 import Players from "./Players.js";
+import Rules from "./Rules.js";
 import Status from "./Status.js";
 import Subaction from "./Subaction.js";
 
@@ -18,11 +19,12 @@ class Room extends Component {
       phase: "wait",
       spectating: false,
       rounds: [], // going from latest round to earliest
+      rules: false,
     };
   }
 
   componentDidMount() {
-    const socket = socketIOClient(window.location.hostname + ":" + 4001);
+    const socket = socketIOClient(window.location.hostname + ":" + process.env.REACT_APP_PORT);
     this.socket = socket;
     this.joinRoom(this.props.roomName);
 
@@ -123,6 +125,8 @@ class Room extends Component {
   submitJudge = judgment => this.socket.emit("judge", judgment);
   toggleClue = name => this.socket.emit("toggle", name);
 
+  toggleRules = () => this.setState({rules: !this.state.rules});
+
   render() {
     const round = this.getCurrRound();
     const activePlayer = round ? round.activePlayer : undefined;
@@ -167,6 +171,7 @@ class Room extends Component {
           changeRoom={this.changeRoom}
           leaveRoom={this.leaveRoom}
           roomName={this.props.roomName}
+          toggleRules={this.toggleRules}
         />
         <Status
           phase={this.state.phase}
@@ -190,6 +195,7 @@ class Room extends Component {
           submitJudge={this.submitJudge}
         />
         {roundsJsx}
+        <Rules shown={this.state.rules} toggleRules={this.toggleRules}/>
       </div>
     );
   }
