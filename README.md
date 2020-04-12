@@ -20,8 +20,6 @@ run `npm install`. development runs on two servers, one for the socket, and one 
 
 you will need a wordlist. the server [Room.js](server/Room.js) assumes you have a wordlist in the same folder named `beta.json`. this wordlist should contain one object with the key `words`, and value an array of a list of strings.
 
-when you deploy, remember to change the client [Room.js](client/Room.js) to have `window.location.port` rather than the hardcoded development port `4001`. run `npm run build` in the client folder. deployment only runs on one server, which runs when you do `npm start`.
-
 ### todo
 
 - sanitize names, clues, and guesses?
