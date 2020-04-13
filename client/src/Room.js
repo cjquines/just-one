@@ -24,7 +24,8 @@ class Room extends Component {
   }
 
   componentDidMount() {
-    const socket = socketIOClient(window.location.hostname + ":" + process.env.REACT_APP_PORT);
+    const port = process.env.NODE_ENV === "production" ? window.location.port : 4001;
+    const socket = socketIOClient(window.location.hostname + ":" + port);
     this.socket = socket;
     this.joinRoom(this.props.roomName);
 
