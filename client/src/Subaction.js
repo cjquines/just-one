@@ -25,7 +25,7 @@ class Subaction extends Component {
           </span>
         )}
         <span className="Subaction-Spectators">{spect}</span>
-        {showSkip && <button onClick={e => this.props.handlePhase("clue")}>next round</button>}
+        {showSkip && <button onClick={e => this.props.handlePhase("clue")}>skip round</button>}
       </div>
     );
   }
