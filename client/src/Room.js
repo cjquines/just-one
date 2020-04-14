@@ -120,7 +120,10 @@ class Room extends Component {
   }
 
   handleKick = name => this.socket.emit("kick", name, this.state.players[name].id);
-  handlePhase = phase => this.socket.emit("phase", phase);
+  handlePhase = phase => {
+    const round = this.getCurrRound();
+    this.socket.emit("phase", phase, round && round.roundId);
+  };
   submitClue = clue => this.socket.emit("clue", clue);
   submitGuess = guess => this.socket.emit("guess", guess);
   submitJudge = judgment => this.socket.emit("judge", judgment);

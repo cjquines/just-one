@@ -229,8 +229,9 @@ class Room {
     }
   }
 
-  startPhase(phase) {
+  startPhase(phase, id_) {
     if (phase !== "clue" && this.phase === phase) return;
+    if (id_ && this.roundId !== id_) return;
     this.phase = phase;
 
     if (phase === "clue") {

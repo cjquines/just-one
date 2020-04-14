@@ -79,7 +79,7 @@ io.on("connection", (socket) => {
     if (room && room.kickPlayer(name_)) kickAndClean(roomName);
   });
 
-  socket.on("phase", phase => room && room.startPhase(phase));
+  socket.on("phase", (phase, id_) => room && room.startPhase(phase, id_));
   socket.on("clue", clue => {
     socket.emit("myClue", clue);
     room && room.handleClue(name, clue);
