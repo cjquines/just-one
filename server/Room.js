@@ -22,6 +22,7 @@ class Room {
     this.clues = {}; // player -> {clue, visible}
     this.guess = undefined;
     this.judgment = undefined;
+    this.pastWords = {}; // word -> true
     this.phase = "wait"; // "clue", "eliminate", "guess", "judge", "end"
     this.playerOrder = [];
     this.players = {}; // of name => {id, status}
@@ -255,7 +256,10 @@ class Room {
         this.clues[name] = { clue: null, visible: true };
       });
       this.io.to(this.roomName).emit("myClue", null);
-      this.word = words[randRange(0, words.length)];
+      do {
+        this.word = words[randRange(0, words.length)];
+      } while (this.pastWords.hasOwnProperty(this.word));
+      this.pastWords[this.word] = true;
       this.sendPhase();
       this.sendClues();
       this.sendWord();
