@@ -164,7 +164,6 @@ class Room extends Component {
         roundsJsx.push(<Subaction
           correct={this.state.correct}
           handlePhase={this.handlePhase}
-          handleSoftPhase={this.handleSoftPhase}
           key={-1}
           phase={this.state.phase}
           spectating={this.state.spectating}
@@ -198,6 +197,7 @@ class Room extends Component {
           judgment={judgment}
           amActive={amActive}
           handlePhase={this.handlePhase}
+          handleSoftPhase={this.handleSoftPhase}
           spectating={this.state.spectating}
           submitClue={this.submitClue}
           submitGuess={this.submitGuess}

@@ -231,7 +231,7 @@ class Room {
   }
 
   softStartPhase(phase, id_) {
-    if (phase === "clue" && this.phase !== "end") return;
+    if (phase === "clue" && this.phase !== "wait" && this.phase !== "end") return;
     this.startPhase(phase, id_);
   }
 
