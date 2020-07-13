@@ -75,9 +75,9 @@ class Action extends Component {
     }
     
     if (!spectating && phase === "wait") {
-      buttons.push(<button key="skip" onClick={e => this.props.handlePhase("clue")}>start game</button>);
+      buttons.push(<button key="skip" onClick={e => this.props.handleSoftPhase("clue")}>start game</button>);
     } else if (!spectating && phase === "end") {
-      buttons.push(<button key="skip" onClick={e => this.props.handlePhase("clue")}>next round</button>);
+      buttons.push(<button key="skip" onClick={e => this.props.handleSoftPhase("clue")}>next round</button>);
     }
 
     return (

@@ -120,6 +120,10 @@ class Room extends Component {
   }
 
   handleKick = name => this.socket.emit("kick", name, this.state.players[name].id);
+  handleSoftPhase = phase => {
+    const round = this.getCurrRound();
+    this.socket.emit("softPhase", phase, round && round.roundId);
+  };
   handlePhase = phase => {
     const round = this.getCurrRound();
     this.socket.emit("phase", phase, round && round.roundId);
@@ -160,6 +164,7 @@ class Room extends Component {
         roundsJsx.push(<Subaction
           correct={this.state.correct}
           handlePhase={this.handlePhase}
+          handleSoftPhase={this.handleSoftPhase}
           key={-1}
           phase={this.state.phase}
           spectating={this.state.spectating}

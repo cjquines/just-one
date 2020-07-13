@@ -229,6 +229,11 @@ class Room {
     }
   }
 
+  softStartPhase(phase, id_) {
+    if (phase === "clue" && this.phase !== "end") return;
+    this.startPhase(phase, id_);
+  }
+
   startPhase(phase, id_) {
     if (phase !== "clue" && this.phase === phase) return;
     if (id_ && this.roundId !== id_) return;
