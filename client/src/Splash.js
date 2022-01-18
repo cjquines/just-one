@@ -16,20 +16,20 @@ class Splash extends Component {
     };
   }
 
-  handleChangeName = e => this.setState({name: e.target.value});
-  handleChangeRoom = e => this.setState({room: e.target.value});
-  toggleRules = () => this.setState({rules: !this.state.rules});
+  handleChangeName = (e) => this.setState({ name: e.target.value });
+  handleChangeRoom = (e) => this.setState({ room: e.target.value });
+  toggleRules = () => this.setState({ rules: !this.state.rules });
 
   submit = (e) => {
     e.preventDefault();
     const { name, room } = this.state;
     navigate(`/room/${room}`, { state: { name: name } });
-  }
+  };
 
   render() {
     return (
       <div className="Splash-Wrapper">
-        <NavBar toggleRules={this.toggleRules}/>
+        <NavBar toggleRules={this.toggleRules} />
         <div className="Splash-Copy">
           <form onSubmit={this.submit}>
             <span>
@@ -52,9 +52,12 @@ class Splash extends Component {
             </span>
             <button type="submit">go!</button>
           </form>
-          <p>by <a href="https://cjquines.com/">cjquines</a> · <a href="https://github.com/cjquines/just-one/">github</a></p>
+          <p>
+            by <a href="https://cjquines.com/">cjquines</a> ·{" "}
+            <a href="https://github.com/cjquines/just-one/">github</a>
+          </p>
         </div>
-        <Rules shown={this.state.rules} toggleRules={this.toggleRules}/>
+        <Rules shown={this.state.rules} toggleRules={this.toggleRules} />
       </div>
     );
   }

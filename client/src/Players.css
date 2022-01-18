@@ -15,7 +15,7 @@
   padding: 0.5em;
 }
 
-.Players-Table tbody tr:nth-child(2n+1) {
+.Players-Table tbody tr:nth-child(2n + 1) {
   background-color: #f0f0f0;
 }
 
@@ -43,7 +43,9 @@
   text-decoration: line-through;
 }
 
-.guessing, .hidden, .notSubmitted {
+.guessing,
+.hidden,
+.notSubmitted {
   color: #aaa;
 }
 

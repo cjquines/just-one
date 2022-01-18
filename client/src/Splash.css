@@ -1,4 +1,9 @@
-html, body, #root, .App-Wrapper, .App-Wrapper > div, .Splash-Wrapper {
+html,
+body,
+#root,
+.App-Wrapper,
+.App-Wrapper > div,
+.Splash-Wrapper {
   height: 100%;
 }
 

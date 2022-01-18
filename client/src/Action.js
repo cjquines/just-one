@@ -10,7 +10,7 @@ class Action extends Component {
     };
   }
 
-  handleChange = e => this.setState({value: e.target.value});
+  handleChange = (e) => this.setState({ value: e.target.value });
 
   submit = (e) => {
     e.preventDefault();
@@ -18,23 +18,36 @@ class Action extends Component {
     const { value } = this.state;
     if (phase === "clue") this.props.submitClue(value || " ");
     else if (phase === "guess") this.props.submitGuess(value);
-    this.setState({value: ""});
-  }
+    this.setState({ value: "" });
+  };
 
   render() {
-    const { activePlayer, amActive, guess, judgment, myClue, phase, spectating, word } = this.props;
+    const {
+      activePlayer,
+      amActive,
+      guess,
+      judgment,
+      myClue,
+      phase,
+      spectating,
+      word,
+    } = this.props;
 
     let message = "";
     let showInput = false;
     let buttons = [];
 
     if (phase === "disconnected") {
-      return (<div className="Action-Wrapper"></div>);
+      return <div className="Action-Wrapper"></div>;
     } else if (phase === "clue") {
       if (amActive || spectating) {
         message = "waiting for clues...";
       } else if (myClue) {
-        message = <span>you wrote <b>{myClue}</b>. waiting for others...</span>;
+        message = (
+          <span>
+            you wrote <b>{myClue}</b>. waiting for others...
+          </span>
+        );
       } else {
         message = "write a one-word clue!";
         showInput = true;
@@ -44,7 +57,11 @@ class Action extends Component {
         message = "the group is comparing clues...";
       } else {
         message = "hide clues that are the same or invalid!";
-        buttons.push(<button key="next" onClick={e => this.props.handlePhase("guess")}>show clues</button>);
+        buttons.push(
+          <button key="next" onClick={(e) => this.props.handlePhase("guess")}>
+            show clues
+          </button>
+        );
       }
     } else if (phase === "guess") {
       if (amActive) {
@@ -55,29 +72,79 @@ class Action extends Component {
       }
     } else if (phase === "judge") {
       if (amActive) {
-        message = <span>you wrote <b>{guess}</b>. waiting for judgment...</span>;
+        message = (
+          <span>
+            you wrote <b>{guess}</b>. waiting for judgment...
+          </span>
+        );
       } else if (spectating) {
-        message = <span>{activePlayer} guessed <b>{guess}</b>.</span>;
+        message = (
+          <span>
+            {activePlayer} guessed <b>{guess}</b>.
+          </span>
+        );
       } else {
-        message = <span>{activePlayer} guessed <b>{guess}</b>. is it right?</span>;
-        buttons.push(<button key="right" onClick={e => this.props.submitJudge(true)}>yep</button>);
-        buttons.push(<button key="wrong" onClick={e => this.props.submitJudge(false)}>nope</button>);
+        message = (
+          <span>
+            {activePlayer} guessed <b>{guess}</b>. is it right?
+          </span>
+        );
+        buttons.push(
+          <button key="right" onClick={(e) => this.props.submitJudge(true)}>
+            yep
+          </button>
+        );
+        buttons.push(
+          <button key="wrong" onClick={(e) => this.props.submitJudge(false)}>
+            nope
+          </button>
+        );
       }
     } else if (phase === "end") {
       if (amActive && !word) {
-        message = <span>your guess, <b>{guess}</b>, was { judgment ? `right!` : ` wrong :(` }</span>;
-        if (!judgment) buttons.push(<button key="guessAgain" onClick={e => this.props.handlePhase("guess")}>guess again</button>);
+        message = (
+          <span>
+            your guess, <b>{guess}</b>, was {judgment ? `right!` : ` wrong :(`}
+          </span>
+        );
+        if (!judgment)
+          buttons.push(
+            <button
+              key="guessAgain"
+              onClick={(e) => this.props.handlePhase("guess")}
+            >
+              guess again
+            </button>
+          );
       } else if (spectating) {
-        message = <span>{activePlayer}’s guess, <b>{guess}</b>, was { judgment ? `right!` : ` wrong :(` }</span>;
+        message = (
+          <span>
+            {activePlayer}’s guess, <b>{guess}</b>, was{" "}
+            {judgment ? `right!` : ` wrong :(`}
+          </span>
+        );
       } else {
-        message = <span>{activePlayer}’s guess, <b>{guess}</b>, was { judgment ? `right!` : ` wrong :(` }</span>;
+        message = (
+          <span>
+            {activePlayer}’s guess, <b>{guess}</b>, was{" "}
+            {judgment ? `right!` : ` wrong :(`}
+          </span>
+        );
       }
     }
-    
+
     if (!spectating && phase === "wait") {
-      buttons.push(<button key="skip" onClick={e => this.props.handleSoftPhase("clue")}>start game</button>);
+      buttons.push(
+        <button key="skip" onClick={(e) => this.props.handleSoftPhase("clue")}>
+          start game
+        </button>
+      );
     } else if (!spectating && phase === "end") {
-      buttons.push(<button key="skip" onClick={e => this.props.handleSoftPhase("clue")}>next round</button>);
+      buttons.push(
+        <button key="skip" onClick={(e) => this.props.handleSoftPhase("clue")}>
+          next round
+        </button>
+      );
     }
 
     return (
@@ -95,7 +162,7 @@ class Action extends Component {
             </form>
           </div>
         )}
-        {buttons.length > 0 && (<div className="Action-Buttons">{buttons}</div>)}
+        {buttons.length > 0 && <div className="Action-Buttons">{buttons}</div>}
       </div>
     );
   }

@@ -64,7 +64,6 @@ io.on("connection", (socket) => {
     }
     room.sendState(name, socket);
     rooms[roomName].players += 1;
-    
   });
   socket.on("spectator", () => {
     room && room.addSpectator(socket.id);
@@ -79,15 +78,18 @@ io.on("connection", (socket) => {
     if (room && room.kickPlayer(name_)) kickAndClean(roomName);
   });
 
-  socket.on("softPhase", (phase, id_) => room && room.softStartPhase(phase, id_));
+  socket.on(
+    "softPhase",
+    (phase, id_) => room && room.softStartPhase(phase, id_)
+  );
   socket.on("phase", (phase, id_) => room && room.startPhase(phase, id_));
-  socket.on("clue", clue => {
+  socket.on("clue", (clue) => {
     socket.emit("myClue", clue);
     room && room.handleClue(name, clue);
   });
-  socket.on("toggle", name_ => room && room.toggleClue(name_));
-  socket.on("guess", guess => room && room.handleGuess(guess));
-  socket.on("judge", judgement => room && room.handleJudge(judgement));
+  socket.on("toggle", (name_) => room && room.toggleClue(name_));
+  socket.on("guess", (guess) => room && room.handleGuess(guess));
+  socket.on("judge", (judgement) => room && room.handleJudge(judgement));
 });
 
 const port = process.env.PORT || 4001;

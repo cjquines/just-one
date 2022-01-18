@@ -13,7 +13,7 @@ class Room {
   constructor(io, roomName) {
     this.io = io;
     this.roomName = roomName;
-    
+
     this.roundId = 0;
     this.correct = 0;
     this.wrong = 0;
@@ -33,7 +33,9 @@ class Room {
   // players
 
   sendPlayers() {
-    this.io.to(this.roomName).emit("players", this.players, this.playerOrder, this.spectators);
+    this.io
+      .to(this.roomName)
+      .emit("players", this.players, this.playerOrder, this.spectators);
   }
 
   newPlayer(name, socketId) {
@@ -42,7 +44,11 @@ class Room {
       oldId = this.players[name].id;
       this.io.to(oldId).emit("phase", "disconnected", null);
     } else {
-      this.playerOrder.splice(randRange(0, this.playerOrder.length + 1), 0, name);
+      this.playerOrder.splice(
+        randRange(0, this.playerOrder.length + 1),
+        0,
+        name
+      );
       this.clues[name] = { clue: null, visible: true };
     }
 
@@ -67,7 +73,7 @@ class Room {
       this.sendPlayers();
       return true;
     } else {
-      this.spectators = this.spectators.filter(id => id !== socketId);
+      this.spectators = this.spectators.filter((id) => id !== socketId);
       this.sendPlayers();
       return false;
     }
@@ -75,10 +81,10 @@ class Room {
 
   kickPlayer(name) {
     if (!(name in this.players)) return false;
-    
+
     this.io.to(this.players[name].id).emit("phase", "disconnected");
     if (name === this.activePlayer) this.startPhase("clue");
-    this.playerOrder = this.playerOrder.filter(name_ => name_ !== name);
+    this.playerOrder = this.playerOrder.filter((name_) => name_ !== name);
     this.handleClue();
     delete this.players[name];
     this.sendPlayers();
@@ -93,7 +99,7 @@ class Room {
     }
     this.spectators.map((id) => {
       ids.push(id);
-      this.io.to(id).emit("phase", "disconnected")
+      this.io.to(id).emit("phase", "disconnected");
     });
     return ids;
   }
@@ -107,30 +113,32 @@ class Room {
   }
 
   toInactive(event, data) {
-    this.playerOrder.map(name => {
+    this.playerOrder.map((name) => {
       if (name !== this.activePlayer) {
         this.io.to(this.players[name].id).emit(event, data);
       }
     });
-    this.spectators.map(id => {
+    this.spectators.map((id) => {
       this.io.to(id).emit(event, data);
-    })
+    });
   }
 
   blindClues() {
     const newClues = Object.fromEntries(
-      Object.entries(this.clues).map(([name, {clue, visible}]) => 
-        [name, {clue: Boolean(clue), visible: visible}]
-      )
+      Object.entries(this.clues).map(([name, { clue, visible }]) => [
+        name,
+        { clue: Boolean(clue), visible: visible },
+      ])
     );
     return newClues;
   }
 
   hiddenClues() {
     return Object.fromEntries(
-      Object.entries(this.clues).map(([name, {clue, visible}]) => 
-        [name, {clue: visible && clue, visible: visible}]
-      )
+      Object.entries(this.clues).map(([name, { clue, visible }]) => [
+        name,
+        { clue: visible && clue, visible: visible },
+      ])
     );
   }
 
@@ -161,7 +169,9 @@ class Room {
   }
 
   sendPhase() {
-    this.io.to(this.roomName).emit("phase", this.phase, this.roundId, this.activePlayer);
+    this.io
+      .to(this.roomName)
+      .emit("phase", this.phase, this.roundId, this.activePlayer);
   }
 
   sendScore() {
@@ -176,7 +186,8 @@ class Room {
     let clues = this.clues;
     if (phase === "clue") {
       clues = this.blindClues();
-      if (name in this.clues && this.clues[name].clue) socket.emit("myClue", this.clues[name].clue);
+      if (name in this.clues && this.clues[name].clue)
+        socket.emit("myClue", this.clues[name].clue);
     }
     if (name === this.activePlayer) {
       if (phase === "eliminate") {
@@ -199,9 +210,11 @@ class Room {
     if (this.phase !== "clue") return;
     if (name in this.clues) this.clues[name].clue = clue;
     this.sendClues();
-    if (this.playerOrder.filter((name_) => {
-      return (name_ !== this.activePlayer) && !this.clues[name_].clue;
-    }).length === 0) {
+    if (
+      this.playerOrder.filter((name_) => {
+        return name_ !== this.activePlayer && !this.clues[name_].clue;
+      }).length === 0
+    ) {
       this.startPhase("eliminate");
     }
   }
@@ -223,7 +236,7 @@ class Room {
   handleJudge(judgment) {
     if (this.phase === "judge") {
       this.judgment = judgment;
-      judgment ? this.correct += 1 : this.wrong += 1;
+      judgment ? (this.correct += 1) : (this.wrong += 1);
       this.sendJudgment();
       this.sendScore();
       this.startPhase("end");
@@ -231,7 +244,8 @@ class Room {
   }
 
   softStartPhase(phase, id_) {
-    if (phase === "clue" && this.phase !== "wait" && this.phase !== "end") return;
+    if (phase === "clue" && this.phase !== "wait" && this.phase !== "end")
+      return;
     this.startPhase(phase, id_);
   }
 
@@ -248,11 +262,13 @@ class Room {
         this.roundId++;
 
         const ind = this.playerOrder.indexOf(this.activePlayer);
-        this.activePlayer = this.playerOrder[(ind + 1) % this.playerOrder.length];
+        this.activePlayer = this.playerOrder[
+          (ind + 1) % this.playerOrder.length
+        ];
       } else {
         this.activePlayer = this.playerOrder[0];
       }
-      this.playerOrder.map(name => {
+      this.playerOrder.map((name) => {
         this.clues[name] = { clue: null, visible: true };
       });
       this.io.to(this.roomName).emit("myClue", null);
@@ -264,10 +280,14 @@ class Room {
       this.sendClues();
       this.sendWord();
     } else if (phase === "eliminate") {
-      this.playerOrder.map(name => {
+      this.playerOrder.map((name) => {
         const clue = this.clues[name].clue;
         if (!clue) return;
-        if (this.playerOrder.filter(name_ => equivalent(clue, this.clues[name_].clue)).length > 1) {
+        if (
+          this.playerOrder.filter((name_) =>
+            equivalent(clue, this.clues[name_].clue)
+          ).length > 1
+        ) {
           this.toggleClue(name);
         }
       });
@@ -276,8 +296,7 @@ class Room {
     } else if (phase === "guess") {
       this.sendPhase();
       this.sendClues();
-    }
-    else {
+    } else {
       this.sendPhase();
     }
   }
