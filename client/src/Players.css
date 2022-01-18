@@ -12,7 +12,10 @@
 }
 
 .Players-Table td {
+  overflow: hidden;
   padding: 0.5em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .Players-Table tbody tr:nth-child(2n + 1) {

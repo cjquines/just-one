@@ -7,7 +7,7 @@ function randRange(min, max) {
 
 function equivalent(s1, s2) {
   if (!s1 || !s2) return false;
-  return nlp(s1).text("reduced") === nlp(s2).text("reduced");
+  return nlp(s1).text("root") === nlp(s2).text("root");
 }
 
 class Room {
