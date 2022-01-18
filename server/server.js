@@ -56,7 +56,10 @@ io.on("connection", (socket) => {
 
   socket.on("name", (name_) => {
     if (room === undefined) return;
-    name = name_;
+    name = name_.replace(
+      /[\u0000-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F]/g,
+      ""
+    );
     const oldId = room.newPlayer(name, socket.id);
     if (oldId in clients) {
       clients[oldId].leave(roomName);
@@ -83,12 +86,22 @@ io.on("connection", (socket) => {
     (phase, id_) => room && room.softStartPhase(phase, id_)
   );
   socket.on("phase", (phase, id_) => room && room.startPhase(phase, id_));
-  socket.on("clue", (clue) => {
+  socket.on("clue", (clue_) => {
+    const clue = clue_.replace(
+      /[\u0000-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F]/g,
+      ""
+    );
     socket.emit("myClue", clue);
     room && room.handleClue(name, clue);
   });
   socket.on("toggle", (name_) => room && room.toggleClue(name_));
-  socket.on("guess", (guess) => room && room.handleGuess(guess));
+  socket.on("guess", (guess_) => {
+    const guess = guess_.replace(
+      /[\u0000-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F]/g,
+      ""
+    );
+    room && room.handleGuess(guess);
+  });
   socket.on("judge", (judgement) => room && room.handleJudge(judgement));
 });
 

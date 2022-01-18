@@ -122,6 +122,10 @@ class Room extends Component {
     } else {
       myName = prompt("enter your name") || undefined;
     }
+    myName = myName.replace(
+      /[\u0000-\u001F\u007F-\u009F\u2000-\u200F\u2028-\u202F]/g,
+      ""
+    );
     if (myName) {
       this.setState({ myName, spectating: false });
       socket.emit("name", myName);
