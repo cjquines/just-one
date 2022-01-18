@@ -133,6 +133,12 @@ class Room extends Component {
       this.setState({ spectating: true });
       socket.emit("spectator");
     }
+
+    let wordlist = this.props?.location?.state?.wordlist;
+    if (wordlist) {
+      socket.emit("wordlist", wordlist);
+    }
+
     this.setState({ roomName });
   };
 

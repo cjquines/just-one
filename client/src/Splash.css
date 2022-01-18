@@ -33,3 +33,11 @@ body,
   margin: 0.25em;
   width: 13em;
 }
+
+.Splash-Copy form details {
+  margin: 0.25em 0;
+}
+
+.Splash-Copy form summary {
+  margin: 0.25em 0;
+}

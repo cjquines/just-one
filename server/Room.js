@@ -1,5 +1,5 @@
 const nlp = require("compromise");
-const words = require("./beta.json")["words"];
+const wordlists = require("./wordlists");
 
 function randRange(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -29,6 +29,7 @@ class Room {
     this.players = {}; // of name => {id, status}
     this.spectators = [];
     this.word = undefined;
+    this.words = undefined;
   }
 
   // players
@@ -66,6 +67,11 @@ class Room {
   addSpectator(socketId) {
     this.spectators.push(socketId);
     this.sendPlayers();
+  }
+
+  setWordList(wordlist) {
+    if (this.words) return;
+    this.words = wordlists[wordlist] || wordlists["beta"];
   }
 
   disconnectSocket(name, socketId) {
@@ -273,8 +279,9 @@ class Room {
         this.clues[name] = { clue: null, visible: true };
       });
       this.io.to(this.roomName).emit("myClue", null);
+      if (!this.words) this.setWordList();
       do {
-        this.word = words[randRange(0, words.length)];
+        this.word = this.words[randRange(0, this.words.length)];
       } while (this.pastWords.hasOwnProperty(this.word));
       this.pastWords[this.word] = true;
       this.sendPhase();

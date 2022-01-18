@@ -68,6 +68,9 @@ io.on("connection", (socket) => {
     room.sendState(name, socket);
     rooms[roomName].players += 1;
   });
+  socket.on("wordlist", (wordlist) => {
+    room && room.setWordList(wordlist);
+  });
   socket.on("spectator", () => {
     room && room.addSpectator(socket.id);
     room && room.sendState(null, socket);

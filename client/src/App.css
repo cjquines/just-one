@@ -109,7 +109,8 @@ button.gray:hover {
   background-color: #999;
 }
 
-input {
+input,
+select {
   background: #f0f0f0;
   border: none;
   border-bottom: 2px solid #f0f0f0;
@@ -124,7 +125,8 @@ input {
   width: 10em;
 }
 
-input:focus {
+input:focus,
+select:focus {
   border-bottom: 2px solid #2bbbad;
   outline: none;
   transition: 0.3s border-bottom;
