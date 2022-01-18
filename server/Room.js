@@ -1,3 +1,4 @@
+const nlp = require("compromise");
 const words = require("./beta.json")["words"];
 
 function randRange(min, max) {
@@ -6,7 +7,7 @@ function randRange(min, max) {
 
 function equivalent(s1, s2) {
   if (!s1 || !s2) return false;
-  return s1.trim().toLowerCase() === s2.trim().toLowerCase();
+  return nlp(s1).text("reduced") === nlp(s2).text("reduced");
 }
 
 class Room {
