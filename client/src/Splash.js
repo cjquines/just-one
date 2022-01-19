@@ -69,8 +69,9 @@ class Splash extends Component {
                   <option value="beta">beta (1018 words)</option>
                   <option value="codenames">codenames (208 words)</option>
                   <option value="skribbl">skribbl (1848 words)</option>
+                  <option value="shibboleth">shibboleth (2000 words)</option>
                   <option value="upgoer">upgoer (1000 words)</option>
-                  <option value="voa">voa learning english (1475 words)</option>
+                  <option value="voa">voa (1475 words)</option>
                 </select>
               </span>
               <span>
@@ -81,9 +82,9 @@ class Splash extends Component {
                   onChange={this.handleChangeMode}
                   value={this.state.mode}
                 >
-                  <option value="one">just one</option>
-                  <option value="two">just two</option>
-                  <option value="schelling">schelling point</option>
+                  <option value="one">just one (keep unique clues)</option>
+                  <option value="two">just two (keep exactly duplicated clues)</option>
+                  <option value="schelling">schelling point (keep most common clue)</option>
                 </select>
               </span>
             </details>

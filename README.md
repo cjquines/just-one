@@ -18,7 +18,7 @@ server uses express and socket.io; frontend uses react.
 
 run `npm install`. development runs on two servers, one for the socket, and one for the client. running `npm start` starts the socket server, and running `npm run hotloader` starts the client server.
 
-you will need a wordlist. the server [Room.js](server/Room.js) assumes you have a wordlist in the same folder named `beta.json`. this wordlist should contain one object with the key `words`, and value an array of a list of strings.
+you will need wordlists, see [wordlist.js](server/wordlist.js). it imports a bunch of `json` files, which should contain a single object with the key `words`, with its value as an array of a list of strings to be words.
 
 ### todo
 
