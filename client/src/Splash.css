@@ -35,6 +35,7 @@ body,
 }
 
 .Splash-Copy form details {
+  display: flex;
   margin: 0.25em 0;
 }
 

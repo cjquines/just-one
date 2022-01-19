@@ -71,6 +71,9 @@ io.on("connection", (socket) => {
   socket.on("wordlist", (wordlist) => {
     room && room.setWordList(wordlist);
   });
+  socket.on("mode", (mode) => {
+    room && room.setMode(mode);
+  });
   socket.on("spectator", () => {
     room && room.addSpectator(socket.id);
     room && room.sendState(null, socket);

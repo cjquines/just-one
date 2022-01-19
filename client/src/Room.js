@@ -139,6 +139,11 @@ class Room extends Component {
       socket.emit("wordlist", wordlist);
     }
 
+    let mode = this.props?.location?.state?.mode;
+    if (mode) {
+      socket.emit("mode", mode);
+    }
+
     this.setState({ roomName });
   };
 

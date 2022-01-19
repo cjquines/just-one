@@ -10,6 +10,23 @@ function equivalent(s1, s2) {
   return nlp(s1).text("root") === nlp(s2).text("root");
 }
 
+function mode(arr_) {
+  const arr = arr_.filter(Boolean);
+  if (arr.length === 0) return null;
+  const count = {};
+  let res = arr[0];
+  let resCnt = 1;
+  for (const elt of arr) {
+    if (count[elt] === undefined) count[elt] = 0;
+    count[elt] += 1;
+    if (count[elt] > resCnt) {
+      res = elt;
+      resCnt = count[elt];
+    }
+  }
+  return res;
+}
+
 class Room {
   constructor(io, roomName) {
     this.io = io;
@@ -23,6 +40,7 @@ class Room {
     this.clues = {}; // player -> {clue, visible}
     this.guess = undefined;
     this.judgment = undefined;
+    this.mode = undefined;
     this.pastWords = {}; // word -> true
     this.phase = "wait"; // "clue", "eliminate", "guess", "judge", "end"
     this.playerOrder = [];
@@ -72,6 +90,11 @@ class Room {
   setWordList(wordlist) {
     if (this.words) return;
     this.words = wordlists[wordlist] || wordlists["beta"];
+  }
+
+  setMode(mode) {
+    if (this.mode) return;
+    this.mode = mode || "one";
   }
 
   disconnectSocket(name, socketId) {
@@ -288,13 +311,30 @@ class Room {
       this.sendClues();
       this.sendWord();
     } else if (phase === "eliminate") {
+      if (!this.mode) this.setMode();
       this.playerOrder.map((name) => {
         const clue = this.clues[name].clue;
         if (!clue) return;
         if (
+          this.mode === "one" &&
           this.playerOrder.filter((name_) =>
             equivalent(clue, this.clues[name_].clue)
           ).length > 1
+        ) {
+          this.toggleClue(name);
+        } else if (
+          this.mode === "two" &&
+          this.playerOrder.filter((name_) =>
+            equivalent(clue, this.clues[name_].clue)
+          ).length !== 2
+        ) {
+          this.toggleClue(name);
+        } else if (
+          this.mode === "schelling" &&
+          !equivalent(
+            clue,
+            mode(Object.values(this.clues).map((obj) => obj.clue))
+          )
         ) {
           this.toggleClue(name);
         }
