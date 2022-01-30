@@ -23,7 +23,7 @@ class NavBar extends Component {
             rules
           </Link>
         </span>
-        {this.props.roomName && (
+        {this.props.roomName ? (
           <span className="NavBar-Room">
             {`room: ${this.props.roomName}`}
             <button
@@ -31,6 +31,26 @@ class NavBar extends Component {
               onClick={(e) => this.props.changeRoom()}
             >
               change
+            </button>
+          </span>
+        ) : (
+          <span className="NavBar-Room">
+            <button
+              className="small gray"
+              onClick={(e) => {
+                const current = localStorage.getItem("color-scheme") || "light";
+                localStorage.setItem(
+                  "color-scheme",
+                  current === "light" ? "dark" : "light"
+                );
+                if (current === "light") {
+                  document.querySelector("html").classList.add("dark");
+                } else {
+                  document.querySelector("html").classList.remove("dark");
+                }
+              }}
+            >
+              dark mode
             </button>
           </span>
         )}

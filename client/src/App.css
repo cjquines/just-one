@@ -1,5 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap");
 
+html {
+  --bg-color: #fff;
+  --input-bg-color: #f0f0f0;
+  --text-color: #212121;
+  --button-color: #26a69a;
+  --button-highlight: #2bbbad;
+  --button-gray: #888;
+  --button-gray-highlight: #999;
+}
+
+html.dark {
+  --bg-color: #000;
+  --input-bg-color: #222;
+  --text-color: #fff;
+  --button-color: #81e6dd;
+  --button-highlight: #5cada6;
+  --button-gray: #888;
+  --button-gray-highlight: #999;
+}
+
 @media all and (min-width: 760px) {
   body {
     font-size: 23px;
@@ -62,7 +82,8 @@
 }
 
 body {
-  background-color: #fff;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   margin: 0;
   padding: 0;
 }
@@ -75,10 +96,10 @@ body {
 }
 
 button {
-  background-color: #26a69a;
+  background-color: var(--button-color);
   border-radius: 2px;
   border: none;
-  color: #fff;
+  color: var(--bg-color);
   cursor: pointer;
   font: inherit;
   height: 2em;
@@ -91,7 +112,7 @@ button {
 }
 
 button:hover {
-  background-color: #2bbbad;
+  background-color: var(--button-highlight);
   transition: 0.3s background-color;
 }
 
@@ -102,19 +123,20 @@ button.small {
 }
 
 button.gray {
-  background-color: #888;
+  background-color: var(--button-gray);
 }
 
 button.gray:hover {
-  background-color: #999;
+  background-color: var(--button-gray-highlight);
 }
 
 input,
 select,
 textarea {
-  background: #f0f0f0;
+  background: var(--input-bg-color);
+  color: var(--text-color);
   border: none;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid var(--input-bg-color);
   border-radius: 0;
   box-sizing: border-box;
   font: inherit;
@@ -133,20 +155,20 @@ textarea {
 
 input:focus,
 select:focus {
-  border-bottom: 2px solid #2bbbad;
+  border-bottom: 2px solid var(--button-highlight);
   outline: none;
   transition: 0.3s border-bottom;
 }
 
 a {
-  border-bottom: 2px solid #fff;
+  border-bottom: 2px solid var(--bg-color);
   box-sizing: border-box;
-  color: #26a69a;
+  color: var(--button-color);
   text-decoration: none;
   transition: 0.3s border-bottom;
 }
 
 a:hover {
-  border-bottom: 2px solid #26a69a;
+  border-bottom: 2px solid var(--button-color);
   transition: 0.3s border-bottom;
 }
