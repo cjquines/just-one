@@ -110,7 +110,8 @@ button.gray:hover {
 }
 
 input,
-select {
+select,
+textarea {
   background: #f0f0f0;
   border: none;
   border-bottom: 2px solid #f0f0f0;
@@ -123,6 +124,11 @@ select {
   transition: 0.3s border-bottom;
   vertical-align: middle;
   width: 10em;
+}
+
+textarea {
+  height: 5em;
+  width: 100%;
 }
 
 input:focus,

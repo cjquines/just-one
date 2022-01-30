@@ -10,6 +10,7 @@ class Splash extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      custom: "",
       mode: "one",
       name: "",
       room: "",
@@ -18,6 +19,7 @@ class Splash extends Component {
     };
   }
 
+  handleChangeCustom = (e) => this.setState({ custom: e.target.value });
   handleChangeMode = (e) => this.setState({ mode: e.target.value });
   handleChangeName = (e) => this.setState({ name: e.target.value });
   handleChangeRoom = (e) => this.setState({ room: e.target.value });
@@ -26,9 +28,9 @@ class Splash extends Component {
 
   submit = (e) => {
     e.preventDefault();
-    const { mode, name, room, wordlist } = this.state;
+    const { custom, mode, name, room, wordlist } = this.state;
     navigate(`/room/${room}`, {
-      state: { mode: mode, name: name, wordlist: wordlist },
+      state: { custom: custom, mode: mode, name: name, wordlist: wordlist },
     });
   };
 
@@ -72,8 +74,19 @@ class Splash extends Component {
                   <option value="shibboleth">shibboleth (2000 words)</option>
                   <option value="upgoer">upgoer (1000 words)</option>
                   <option value="voa">voa (1475 words)</option>
+                  <option value="custom">custom</option>
                 </select>
               </span>
+              {this.state.wordlist === "custom" ? (
+                <span>
+                  <textarea
+                    id="custom"
+                    onChange={this.handleChangeCustom}
+                    placeholder="comma, separated, words"
+                    value={this.state.custom}
+                  />
+                </span>
+              ) : null}
               <span>
                 <label htmlFor="mode">mode:</label>
                 <select
@@ -83,8 +96,12 @@ class Splash extends Component {
                   value={this.state.mode}
                 >
                   <option value="one">just one (keep unique clues)</option>
-                  <option value="two">just two (keep exactly duplicated clues)</option>
-                  <option value="schelling">schelling point (keep most common clue)</option>
+                  <option value="two">
+                    just two (keep exactly duplicated clues)
+                  </option>
+                  <option value="schelling">
+                    schelling point (keep most common clue)
+                  </option>
                 </select>
               </span>
             </details>

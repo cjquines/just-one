@@ -136,7 +136,12 @@ class Room extends Component {
 
     let wordlist = this.props?.location?.state?.wordlist;
     if (wordlist) {
-      socket.emit("wordlist", wordlist);
+      let custom = this.props?.location?.state?.custom;
+      if (wordlist === "custom" && custom) {
+        socket.emit("wordlist", custom);
+      } else {
+        socket.emit("wordlist", wordlist);
+      }
     }
 
     let mode = this.props?.location?.state?.mode;

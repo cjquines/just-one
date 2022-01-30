@@ -89,7 +89,9 @@ class Room {
 
   setWordList(wordlist) {
     if (this.words) return;
-    this.words = wordlists[wordlist] || wordlists["beta"];
+    const custom = wordlist.split(",").map((word) => word.trim());
+    this.words =
+      custom.length > 1 ? custom : wordlists[wordlist] || wordlists["beta"];
   }
 
   setMode(mode) {
@@ -302,10 +304,8 @@ class Room {
         this.clues[name] = { clue: null, visible: true };
       });
       this.io.to(this.roomName).emit("myClue", null);
-      if (!this.words) this.setWordList();
-      do {
-        this.word = this.words[randRange(0, this.words.length)];
-      } while (this.pastWords.hasOwnProperty(this.word));
+      if (!this.words || this.words.length == 0) this.setWordList();
+      this.word = this.words.splice(randRange(0, this.words.length), 1)[0];
       this.pastWords[this.word] = true;
       this.sendPhase();
       this.sendClues();
