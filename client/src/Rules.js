@@ -21,7 +21,7 @@ class Rules extends Component {
             </p>
           </div>
           <div className="Rules-Steps">
-            <p style={{ color: "#666" }}>in each round:</p>
+            <p>in each round:</p>
             <ol>
               <li>
                 <p className="Rules-Step-Lead">

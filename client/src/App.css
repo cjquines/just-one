@@ -4,6 +4,10 @@ html {
   --bg-color: #fff;
   --input-bg-color: #f0f0f0;
   --text-color: #212121;
+  --text-hidden: #aaa;
+  --text-disconnected: #888;
+  --text-correct: #388e3c;
+  --text-wrong: #d32f2f;
   --button-color: #26a69a;
   --button-highlight: #2bbbad;
   --button-gray: #888;
@@ -14,6 +18,10 @@ html.dark {
   --bg-color: #000;
   --input-bg-color: #222;
   --text-color: #fff;
+  --text-hidden: #aaa;
+  --text-disconnected: #888;
+  --text-correct: #57bf5b;
+  --text-wrong: #d32f2f;
   --button-color: #81e6dd;
   --button-highlight: #5cada6;
   --button-gray: #888;

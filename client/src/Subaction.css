@@ -7,9 +7,9 @@
 }
 
 .Subaction-Wrapper button {
-  background: #888;
+  background: var(--button-gray);
 }
 
 .Subaction-Wrapper button:hover {
-  background: #999;
+  background: var(--button-gray-highlight);
 }

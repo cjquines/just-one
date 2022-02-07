@@ -19,7 +19,7 @@
 }
 
 .Players-Table tbody tr:nth-child(2n + 1) {
-  background-color: #f0f0f0;
+  background-color: var(--input-bg-color);
 }
 
 .Players-Table tr td:last-child {
@@ -31,11 +31,11 @@
 }
 
 .Players-ToggledOffToggle {
-  background-color: #888;
+  background-color: var(--button-gray);
 }
 
 .Players-ToggledOffToggle:hover {
-  background-color: #999;
+  background-color: var(--button-gray-highlight);
 }
 
 .Players-Name {
@@ -49,11 +49,11 @@
 .guessing,
 .hidden,
 .notSubmitted {
-  color: #aaa;
+  color: var(--text-hidden);
 }
 
 .disconnected {
-  color: #888;
+  color: var(--text-disconnected);
 }
 
 .disconnected-marker {

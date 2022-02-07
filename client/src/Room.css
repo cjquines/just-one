@@ -3,13 +3,13 @@
 }
 
 .Round-Status {
-  color: #888;
+  color: var(--text-disconnected);
   margin-top: 1em;
   padding: 0.5em;
 }
 
 .Round-Status b {
-  color: initial;
+  color: var(--text-color);
   font-weight: normal;
 }
 
