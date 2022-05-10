@@ -89,9 +89,11 @@ class Room {
 
   setWordList(wordlist) {
     if (this.words) return;
-    const custom = wordlist.split(",").map((word) => word.trim());
+    const custom = wordlist?.split(",").map((word) => word.trim());
     this.words =
-      custom.length > 1 ? custom : wordlists[wordlist] || wordlists["beta"];
+      custom && custom.length > 1
+        ? custom
+        : wordlists[wordlist] || wordlists["beta"];
   }
 
   setMode(mode) {
