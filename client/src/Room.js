@@ -111,7 +111,8 @@ class Room extends Component {
     const socket = this.socket;
     socket.emit("join", roomName);
 
-    let myName = "";
+    // if the url has the user's name in `...?name=John...`, use it
+    let myName = new URLSearchParams(window.location.search).get("name") || "";
     if (
       this.props.location &&
       this.props.location.state &&
